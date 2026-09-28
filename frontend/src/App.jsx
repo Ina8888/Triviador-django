@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
+import AuthModal from './components/AuthModal'
+import { authApi } from './services/api'
 
 const territories = [
   { id: 'north', name: 'NORTH', points: '180 PTS', color: 'coral', x: 22, y: 17 },
@@ -16,12 +18,33 @@ const answers = [
   'The telephone',
 ]
 
+const avatarIcons = {
+  'knight-1': '🛡️',
+  'knight-2': '⚔️',
+  'knight-3': '👑',
+  'knight-4': '🏹',
+}
+
 function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [activeTerritory, setActiveTerritory] = useState('capital')
   const [log, setLog] = useState(['YOUR TURN: choose an answer to attack CAPITAL.'])
   const [round, setRound] = useState(4)
+
+  // Authentication state
+  const [currentUser, setCurrentUser] = useState(null)
+  const [isAuthOpen, setIsAuthOpen] = useState(false)
+  const [authTab, setAuthTab] = useState('login')
+
+  // Check existing session on mount (persists across refresh)
+  useEffect(() => {
+    authApi.getMe().then((res) => {
+      if (res.ok && res.data) {
+        setCurrentUser(res.data)
+      }
+    })
+  }, [])
 
   const chooseAnswer = (answer) => {
     setSelectedAnswer(answer)
@@ -55,17 +78,77 @@ function App() {
             <h1>QUIZ<span>CONQUEST</span></h1>
           </div>
         </div>
+
+        <div className="auth-header-actions">
+          {currentUser ? (
+            <button
+              type="button"
+              className="user-pill-btn"
+              onClick={() => {
+                setAuthTab('profile')
+                setIsAuthOpen(true)
+              }}
+            >
+              <span className="user-pill-avatar">
+                {avatarIcons[currentUser.profile?.avatar_key] || '🛡️'}
+              </span>
+              <span className="user-pill-name">
+                {currentUser.profile?.nickname || currentUser.username}
+              </span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="login-trigger-btn"
+              onClick={() => {
+                setAuthTab('login')
+                setIsAuthOpen(true)
+              }}
+            >
+              LOGIN / REGISTER <span>↗</span>
+            </button>
+          )}
+        </div>
+
         <div className="match-meta">
           <span>MATCH 08—A</span>
           <strong>ROUND {String(round).padStart(2, '0')} / 12</strong>
-          <button className="icon-button" type="button" aria-label="Open game menu">≡</button>
+          <button
+            className="icon-button"
+            type="button"
+            aria-label="Open profile or menu"
+            onClick={() => {
+              setAuthTab(currentUser ? 'profile' : 'login')
+              setIsAuthOpen(true)
+            }}
+          >
+            ≡
+          </button>
         </div>
       </header>
 
       <section className="score-strip" aria-label="Player scores">
-        <div className="player-card player-active">
-          <span className="player-number">01</span>
-          <div><strong>YOU</strong><small>RED COMMAND</small></div>
+        <div
+          className="player-card player-active"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setAuthTab(currentUser ? 'profile' : 'login')
+            setIsAuthOpen(true)
+          }}
+        >
+          <span className="player-number">
+            {currentUser?.profile?.avatar_key
+              ? avatarIcons[currentUser.profile.avatar_key]
+              : '01'}
+          </span>
+          <div>
+            <strong>
+              {currentUser?.profile?.nickname ? currentUser.profile.nickname : 'YOU'}
+            </strong>
+            <small>
+              {currentUser ? `@${currentUser.username}` : 'RED COMMAND'}
+            </small>
+          </div>
           <b>1,240</b>
         </div>
         <div className="player-card">
@@ -105,7 +188,11 @@ function App() {
             ))}
             <div className="map-coordinates">N 42° 18' / E 19° 51'</div>
           </div>
-          <div className="map-footer"><span><i className="legend-dot red" /> YOUR ZONES</span><span><i className="legend-dot black" /> ENEMY ZONES</span><span><i className="legend-dot yellow" /> OPEN ZONES</span></div>
+          <div className="map-footer">
+            <span><i className="legend-dot red" /> YOUR ZONES</span>
+            <span><i className="legend-dot black" /> ENEMY ZONES</span>
+            <span><i className="legend-dot yellow" /> OPEN ZONES</span>
+          </div>
         </section>
 
         <section className="question-panel panel-frame">
@@ -133,9 +220,15 @@ function App() {
               </button>
             ))}
           </div>
-          {submitted && <div className={`result-message ${selectedAnswer === answers[0] ? 'result-correct' : 'result-wrong'}`}>{selectedAnswer === answers[0] ? 'CORRECT / +320 POINTS' : 'INCORRECT / 0 POINTS'}</div>}
+          {submitted && (
+            <div className={`result-message ${selectedAnswer === answers[0] ? 'result-correct' : 'result-wrong'}`}>
+              {selectedAnswer === answers[0] ? 'CORRECT / +320 POINTS' : 'INCORRECT / 0 POINTS'}
+            </div>
+          )}
           <div className="question-actions">
-            <button className="primary-button" type="button" onClick={submitAnswer} disabled={!selectedAnswer || submitted}>CONFIRM ANSWER <span>↗</span></button>
+            <button className="primary-button" type="button" onClick={submitAnswer} disabled={!selectedAnswer || submitted}>
+              CONFIRM ANSWER <span>↗</span>
+            </button>
             <button className="secondary-button" type="button" onClick={endTurn}>END TURN</button>
           </div>
         </section>
@@ -143,12 +236,38 @@ function App() {
 
       <section className="bottom-grid">
         <div className="event-panel panel-frame">
-          <div className="panel-heading"><div><span className="section-label">03 / LIVE FEED</span><h2>FIELD REPORT</h2></div><span className="live-label"><i className="pulse-dot" /> LIVE</span></div>
-          <div className="event-log">{log.slice(0, 3).map((entry, index) => <p className={index === 0 ? 'event-new' : ''} key={`${entry}-${index}`}><span>{String(index + 1).padStart(2, '0')}</span>{entry}</p>)}</div>
+          <div className="panel-heading">
+            <div><span className="section-label">03 / LIVE FEED</span><h2>FIELD REPORT</h2></div>
+            <span className="live-label"><i className="pulse-dot" /> LIVE</span>
+          </div>
+          <div className="event-log">
+            {log.slice(0, 3).map((entry, index) => (
+              <p className={index === 0 ? 'event-new' : ''} key={`${entry}-${index}`}>
+                <span>{String(index + 1).padStart(2, '0')}</span>{entry}
+              </p>
+            ))}
+          </div>
         </div>
-        <div className="objective-panel panel-frame"><span className="section-label">CURRENT OBJECTIVE</span><strong>CONTROL 3 ZONES</strong><div className="progress-track"><span /></div><small>2 OF 3 CONTROLLED</small></div>
-        <button className="leave-button" type="button" onClick={() => window.alert('Leave match?')}>LEAVE MATCH <span>→</span></button>
+        <div className="objective-panel panel-frame">
+          <span className="section-label">CURRENT OBJECTIVE</span>
+          <strong>CONTROL 3 ZONES</strong>
+          <div className="progress-track"><span /></div>
+          <small>2 OF 3 CONTROLLED</small>
+        </div>
+        <button className="leave-button" type="button" onClick={() => window.alert('Leave match?')}>
+          LEAVE MATCH <span>→</span>
+        </button>
       </section>
+
+      {/* Auth & Profile Modal */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        user={currentUser}
+        initialTab={authTab}
+        onAuthSuccess={(userData) => setCurrentUser(userData)}
+        onLogout={() => setCurrentUser(null)}
+      />
     </main>
   )
 }
