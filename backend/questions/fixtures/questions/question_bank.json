@@ -125,7 +125,7 @@
     "pk": 8,
     "fields": {
       "question": 2,
-      "text": "Цар Калоян",
+      "text": "Цар Самуил",
       "is_correct": false
     }
   },
@@ -133,8 +133,8 @@
     "model": "questions.choicequestion",
     "pk": 3,
     "fields": {
-      "category": 2,
-      "text": "Кой е най-високият връх в България и на Балканския полуостров?"
+      "category": 1,
+      "text": "Коя битка през 1205 г. завършва с пленяването на латинския император Балдуин IX?"
     }
   },
   {
@@ -142,7 +142,7 @@
     "pk": 9,
     "fields": {
       "question": 3,
-      "text": "Мусала",
+      "text": "Битката при Одрин",
       "is_correct": true
     }
   },
@@ -151,7 +151,7 @@
     "pk": 10,
     "fields": {
       "question": 3,
-      "text": "Вихрен",
+      "text": "Битката при Клокотница",
       "is_correct": false
     }
   },
@@ -160,7 +160,7 @@
     "pk": 11,
     "fields": {
       "question": 3,
-      "text": "Ботев",
+      "text": "Битката при Велбъжд",
       "is_correct": false
     }
   },
@@ -169,7 +169,7 @@
     "pk": 12,
     "fields": {
       "question": 3,
-      "text": "Черни връх",
+      "text": "Битката при Тревненския проход",
       "is_correct": false
     }
   },
@@ -177,8 +177,8 @@
     "model": "questions.choicequestion",
     "pk": 4,
     "fields": {
-      "category": 2,
-      "text": "Коя река представлява естествената северна граница на България с Румъния?"
+      "category": 1,
+      "text": "Кой български цар управлява по време на т.нар. „Златен век“ на българската култура?"
     }
   },
   {
@@ -186,7 +186,7 @@
     "pk": 13,
     "fields": {
       "question": 4,
-      "text": "Дунав",
+      "text": "Цар Симеон I",
       "is_correct": true
     }
   },
@@ -195,7 +195,7 @@
     "pk": 14,
     "fields": {
       "question": 4,
-      "text": "Марица",
+      "text": "Цар Петър I",
       "is_correct": false
     }
   },
@@ -204,7 +204,7 @@
     "pk": 15,
     "fields": {
       "question": 4,
-      "text": "Искър",
+      "text": "Хан Омуртаг",
       "is_correct": false
     }
   },
@@ -213,7 +213,7 @@
     "pk": 16,
     "fields": {
       "question": 4,
-      "text": "Струма",
+      "text": "Княз Борис I",
       "is_correct": false
     }
   },
@@ -221,8 +221,8 @@
     "model": "questions.choicequestion",
     "pk": 5,
     "fields": {
-      "category": 3,
-      "text": "Коя планета в Слънчевата система е най-близо до Слънцето?"
+      "category": 1,
+      "text": "През коя година избухва Априлското въстание в българските земи?"
     }
   },
   {
@@ -230,7 +230,7 @@
     "pk": 17,
     "fields": {
       "question": 5,
-      "text": "Меркурий",
+      "text": "1876 г.",
       "is_correct": true
     }
   },
@@ -239,7 +239,7 @@
     "pk": 18,
     "fields": {
       "question": 5,
-      "text": "Венера",
+      "text": "1875 г.",
       "is_correct": false
     }
   },
@@ -248,7 +248,7 @@
     "pk": 19,
     "fields": {
       "question": 5,
-      "text": "Марс",
+      "text": "1877 г.",
       "is_correct": false
     }
   },
@@ -257,7 +257,7 @@
     "pk": 20,
     "fields": {
       "question": 5,
-      "text": "Юпитер",
+      "text": "1878 г.",
       "is_correct": false
     }
   },
@@ -265,8 +265,8 @@
     "model": "questions.choicequestion",
     "pk": 6,
     "fields": {
-      "category": 3,
-      "text": "Какъв е химичният символ на химичния елемент злато?"
+      "category": 1,
+      "text": "Кой е авторът на „История славянобългарска“, завършена през 1762 г.?"
     }
   },
   {
@@ -274,7 +274,7 @@
     "pk": 21,
     "fields": {
       "question": 6,
-      "text": "Au",
+      "text": "Паисий Хилендарски",
       "is_correct": true
     }
   },
@@ -283,7 +283,7 @@
     "pk": 22,
     "fields": {
       "question": 6,
-      "text": "Ag",
+      "text": "Софроний Врачански",
       "is_correct": false
     }
   },
@@ -292,7 +292,7 @@
     "pk": 23,
     "fields": {
       "question": 6,
-      "text": "Fe",
+      "text": "Неофит Бозвели",
       "is_correct": false
     }
   },
@@ -301,7 +301,7 @@
     "pk": 24,
     "fields": {
       "question": 6,
-      "text": "Cu",
+      "text": "Петър Берон",
       "is_correct": false
     }
   },
@@ -309,8 +309,8 @@
     "model": "questions.choicequestion",
     "pk": 7,
     "fields": {
-      "category": 4,
-      "text": "Кой е авторът на първия български роман „Под игото“?"
+      "category": 1,
+      "text": "През коя година е подписан Санстефанският мирен договор?"
     }
   },
   {
@@ -318,7 +318,7 @@
     "pk": 25,
     "fields": {
       "question": 7,
-      "text": "Иван Вазов",
+      "text": "1878 г.",
       "is_correct": true
     }
   },
@@ -327,7 +327,7 @@
     "pk": 26,
     "fields": {
       "question": 7,
-      "text": "Христо Ботев",
+      "text": "1877 г.",
       "is_correct": false
     }
   },
@@ -336,7 +336,7 @@
     "pk": 27,
     "fields": {
       "question": 7,
-      "text": "Алеко Константинов",
+      "text": "1879 г.",
       "is_correct": false
     }
   },
@@ -345,7 +345,7 @@
     "pk": 28,
     "fields": {
       "question": 7,
-      "text": "Елин Пелин",
+      "text": "1885 г.",
       "is_correct": false
     }
   },
@@ -353,8 +353,8 @@
     "model": "questions.choicequestion",
     "pk": 8,
     "fields": {
-      "category": 4,
-      "text": "Кой емблематичен герой от българската литература е създаден от Алеко Константинов?"
+      "category": 1,
+      "text": "Кой е първият избран княз на възстановеното Княжество България след Освобождението?"
     }
   },
   {
@@ -362,7 +362,7 @@
     "pk": 29,
     "fields": {
       "question": 8,
-      "text": "Бай Ганьо",
+      "text": "Александър I Батенберг",
       "is_correct": true
     }
   },
@@ -371,7 +371,7 @@
     "pk": 30,
     "fields": {
       "question": 8,
-      "text": "Андрешко",
+      "text": "Фердинанд I",
       "is_correct": false
     }
   },
@@ -380,7 +380,7 @@
     "pk": 31,
     "fields": {
       "question": 8,
-      "text": "Бойчо Огнянов",
+      "text": "Борис III",
       "is_correct": false
     }
   },
@@ -389,7 +389,7 @@
     "pk": 32,
     "fields": {
       "question": 8,
-      "text": "Косачът Лазо",
+      "text": "Симеон II",
       "is_correct": false
     }
   },
@@ -397,8 +397,8 @@
     "model": "questions.choicequestion",
     "pk": 9,
     "fields": {
-      "category": 5,
-      "text": "Кой гениален ренесансов художник е автор на портрета „Мона Лиза“?"
+      "category": 2,
+      "text": "Коя е най-дългата река, която протича изцяло на територията на България?"
     }
   },
   {
@@ -406,7 +406,7 @@
     "pk": 33,
     "fields": {
       "question": 9,
-      "text": "Леонардо да Винчи",
+      "text": "Искър",
       "is_correct": true
     }
   },
@@ -415,7 +415,7 @@
     "pk": 34,
     "fields": {
       "question": 9,
-      "text": "Микеланджело Буонароти",
+      "text": "Марица",
       "is_correct": false
     }
   },
@@ -424,7 +424,7 @@
     "pk": 35,
     "fields": {
       "question": 9,
-      "text": "Рафаело Санцио",
+      "text": "Янтра",
       "is_correct": false
     }
   },
@@ -433,7 +433,7 @@
     "pk": 36,
     "fields": {
       "question": 9,
-      "text": "Винсент ван Гог",
+      "text": "Тунджа",
       "is_correct": false
     }
   },
@@ -441,8 +441,8 @@
     "model": "questions.choicequestion",
     "pk": 10,
     "fields": {
-      "category": 5,
-      "text": "В кой европейски град се намира световноизвестният музей Лувъра?"
+      "category": 2,
+      "text": "Кой е най-големият остров по площ на планетата Земя?"
     }
   },
   {
@@ -450,7 +450,7 @@
     "pk": 37,
     "fields": {
       "question": 10,
-      "text": "Париж",
+      "text": "Гренландия",
       "is_correct": true
     }
   },
@@ -459,7 +459,7 @@
     "pk": 38,
     "fields": {
       "question": 10,
-      "text": "Рим",
+      "text": "Мадагаскар",
       "is_correct": false
     }
   },
@@ -468,7 +468,7 @@
     "pk": 39,
     "fields": {
       "question": 10,
-      "text": "Лондон",
+      "text": "Борнео",
       "is_correct": false
     }
   },
@@ -477,7 +477,7 @@
     "pk": 40,
     "fields": {
       "question": 10,
-      "text": "Мадрид",
+      "text": "Нова Гвинея",
       "is_correct": false
     }
   },
@@ -485,8 +485,8 @@
     "model": "questions.choicequestion",
     "pk": 11,
     "fields": {
-      "category": 6,
-      "text": "Коя българска лекоатлетка постави световен рекорд в скока на височина с резултат 209 см?"
+      "category": 2,
+      "text": "В коя планина се намира връх Ботев, най-високият връх на Старопланинската верига?"
     }
   },
   {
@@ -494,7 +494,7 @@
     "pk": 41,
     "fields": {
       "question": 11,
-      "text": "Стефка Костадинова",
+      "text": "Стара планина",
       "is_correct": true
     }
   },
@@ -503,7 +503,7 @@
     "pk": 42,
     "fields": {
       "question": 11,
-      "text": "Йорданка Донкова",
+      "text": "Рила",
       "is_correct": false
     }
   },
@@ -512,7 +512,7 @@
     "pk": 43,
     "fields": {
       "question": 11,
-      "text": "Тереза Маринова",
+      "text": "Пирин",
       "is_correct": false
     }
   },
@@ -521,7 +521,7 @@
     "pk": 44,
     "fields": {
       "question": 11,
-      "text": "Ивет Лалова",
+      "text": "Родопи",
       "is_correct": false
     }
   },
@@ -529,8 +529,8 @@
     "model": "questions.choicequestion",
     "pk": 12,
     "fields": {
-      "category": 6,
-      "text": "Колко играчи от един отбор са на терена по време на официален футболен мач?"
+      "category": 2,
+      "text": "Коя е най-дългата река на континента Африка и в света?"
     }
   },
   {
@@ -538,7 +538,7 @@
     "pk": 45,
     "fields": {
       "question": 12,
-      "text": "11",
+      "text": "Нил",
       "is_correct": true
     }
   },
@@ -547,7 +547,7 @@
     "pk": 46,
     "fields": {
       "question": 12,
-      "text": "10",
+      "text": "Амазонка",
       "is_correct": false
     }
   },
@@ -556,7 +556,7 @@
     "pk": 47,
     "fields": {
       "question": 12,
-      "text": "9",
+      "text": "Конго",
       "is_correct": false
     }
   },
@@ -565,7 +565,1591 @@
     "pk": 48,
     "fields": {
       "question": 12,
+      "text": "Замбези",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 13,
+    "fields": {
+      "category": 2,
+      "text": "Кой е най-големият и най-дълбок океан на Земята?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 49,
+    "fields": {
+      "question": 13,
+      "text": "Тихи океан",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 50,
+    "fields": {
+      "question": 13,
+      "text": "Атлантически океан",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 51,
+    "fields": {
+      "question": 13,
+      "text": "Индийски океан",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 52,
+    "fields": {
+      "question": 13,
+      "text": "Северен ледовит океан",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 14,
+    "fields": {
+      "category": 2,
+      "text": "През колко континента преминава земният екватор?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 53,
+    "fields": {
+      "question": 14,
+      "text": "3",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 54,
+    "fields": {
+      "question": 14,
+      "text": "2",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 55,
+    "fields": {
+      "question": 14,
+      "text": "4",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 56,
+    "fields": {
+      "question": 14,
+      "text": "5",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 15,
+    "fields": {
+      "category": 2,
+      "text": "Коя европейска столица е разположена на живописните брегове на река Сена?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 57,
+    "fields": {
+      "question": 15,
+      "text": "Париж",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 58,
+    "fields": {
+      "question": 15,
+      "text": "Лондон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 59,
+    "fields": {
+      "question": 15,
+      "text": "Берлин",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 60,
+    "fields": {
+      "question": 15,
+      "text": "Рим",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 16,
+    "fields": {
+      "category": 2,
+      "text": "Кое е най-голямото по площ безотточно вътрешно езеро в света?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 61,
+    "fields": {
+      "question": 16,
+      "text": "Каспийско море",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 62,
+    "fields": {
+      "question": 16,
+      "text": "Байкал",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 63,
+    "fields": {
+      "question": 16,
+      "text": "Горно езеро",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 64,
+    "fields": {
+      "question": 16,
+      "text": "Виктория",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 17,
+    "fields": {
+      "category": 3,
+      "text": "Кой химичен елемент се обозначава с химичния символ 'O' в Менделеевата таблица?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 65,
+    "fields": {
+      "question": 17,
+      "text": "Кислород",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 66,
+    "fields": {
+      "question": 17,
+      "text": "Олово",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 67,
+    "fields": {
+      "question": 17,
+      "text": "Озон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 68,
+    "fields": {
+      "question": 17,
+      "text": "Осмий",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 18,
+    "fields": {
+      "category": 3,
+      "text": "Коя планета от Слънчевата система е популярна с названието „Червената планета“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 69,
+    "fields": {
+      "question": 18,
+      "text": "Марс",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 70,
+    "fields": {
+      "question": 18,
+      "text": "Венера",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 71,
+    "fields": {
+      "question": 18,
+      "text": "Юпитер",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 72,
+    "fields": {
+      "question": 18,
+      "text": "Меркурий",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 19,
+    "fields": {
+      "category": 3,
+      "text": "Каква физична величина се измерва с мерната единица „херц“ (Hz)?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 73,
+    "fields": {
+      "question": 19,
+      "text": "Честота",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 74,
+    "fields": {
+      "question": 19,
+      "text": "Сила",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 75,
+    "fields": {
+      "question": 19,
+      "text": "Енергия",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 76,
+    "fields": {
+      "question": 19,
+      "text": "Налягане",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 20,
+    "fields": {
+      "category": 3,
+      "text": "Кой велик учен формулира трите основни закона на класическата механика?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 77,
+    "fields": {
+      "question": 20,
+      "text": "Исак Нютон",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 78,
+    "fields": {
+      "question": 20,
+      "text": "Алберт Айнщайн",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 79,
+    "fields": {
+      "question": 20,
+      "text": "Галилео Галилей",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 80,
+    "fields": {
+      "question": 20,
+      "text": "Никола Тесла",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 21,
+    "fields": {
+      "category": 3,
+      "text": "Кой е най-разпространеният газ в земната атмосфера като процентен обем?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 81,
+    "fields": {
+      "question": 21,
+      "text": "Азот",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 82,
+    "fields": {
+      "question": 21,
+      "text": "Кислород",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 83,
+    "fields": {
+      "question": 21,
+      "text": "Въглероден диоксид",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 84,
+    "fields": {
+      "question": 21,
+      "text": "Аргон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 22,
+    "fields": {
+      "category": 3,
+      "text": "Коя органна система отговаря за пренасянето на кислород и хранителни вещества чрез кръвта?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 85,
+    "fields": {
+      "question": 22,
+      "text": "Сърдечно-съдова",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 86,
+    "fields": {
+      "question": 22,
+      "text": "Нервна",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 87,
+    "fields": {
+      "question": 22,
+      "text": "Храносмилателна",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 88,
+    "fields": {
+      "question": 22,
+      "text": "Дихателна",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 23,
+    "fields": {
+      "category": 3,
+      "text": "Кой химичен елемент формира основата на всички органични съединения на Земята?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 89,
+    "fields": {
+      "question": 23,
+      "text": "Въглерод",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 90,
+    "fields": {
+      "question": 23,
+      "text": "Сяра",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 91,
+    "fields": {
+      "question": 23,
+      "text": "Фосфор",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 92,
+    "fields": {
+      "question": 23,
+      "text": "Хлор",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 24,
+    "fields": {
+      "category": 3,
+      "text": "Как се нарича биологичният процес, при който растенията образуват органични вещества с помощта на светлина?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 93,
+    "fields": {
+      "question": 24,
+      "text": "Фотосинтеза",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 94,
+    "fields": {
+      "question": 24,
+      "text": "Митоза",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 95,
+    "fields": {
+      "question": 24,
+      "text": "Клетъчно дишане",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 96,
+    "fields": {
+      "question": 24,
+      "text": "Осмоза",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 25,
+    "fields": {
+      "category": 4,
+      "text": "Кой е авторът на първия класически български роман „Под игото“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 97,
+    "fields": {
+      "question": 25,
+      "text": "Иван Вазов",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 98,
+    "fields": {
+      "question": 25,
+      "text": "Христо Ботев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 99,
+    "fields": {
+      "question": 25,
+      "text": "Алеко Константинов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 100,
+    "fields": {
+      "question": 25,
+      "text": "Любен Каравелов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 26,
+    "fields": {
+      "category": 4,
+      "text": "Кой български творец създава популярния сатиричен герой Бай Ганьо?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 101,
+    "fields": {
+      "question": 26,
+      "text": "Алеко Константинов",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 102,
+    "fields": {
+      "question": 26,
+      "text": "Елин Пелин",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 103,
+    "fields": {
+      "question": 26,
+      "text": "Йордан Йовков",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 104,
+    "fields": {
+      "question": 26,
+      "text": "Стоян Михайловски",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 27,
+    "fields": {
+      "category": 4,
+      "text": "Кой гениален поет и революционер написва баладата „Хаджи Димитър“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 105,
+    "fields": {
+      "question": 27,
+      "text": "Христо Ботев",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 106,
+    "fields": {
+      "question": 27,
+      "text": "Пейо Яворов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 107,
+    "fields": {
+      "question": 27,
+      "text": "Димчо Дебелянов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 108,
+    "fields": {
+      "question": 27,
+      "text": "Гео Милев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 28,
+    "fields": {
+      "category": 4,
+      "text": "Кой античен древногръцки автор се счита за създател на епосите „Илиада“ и „Одисея“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 109,
+    "fields": {
+      "question": 28,
+      "text": "Омир",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 110,
+    "fields": {
+      "question": 28,
+      "text": "Вергилий",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 111,
+    "fields": {
+      "question": 28,
+      "text": "Платон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 112,
+    "fields": {
+      "question": 28,
+      "text": "Софокъл",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 29,
+    "fields": {
+      "category": 4,
+      "text": "Как се нарича рицарят, който се бори с вятърни мелници в романа на Мигел де Сервантес?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 113,
+    "fields": {
+      "question": 29,
+      "text": "Дон Кихот",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 114,
+    "fields": {
+      "question": 29,
+      "text": "Санчо Панса",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 115,
+    "fields": {
+      "question": 29,
+      "text": "Робин Худ",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 116,
+    "fields": {
+      "question": 29,
+      "text": "Фауст",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 30,
+    "fields": {
+      "category": 4,
+      "text": "Кой английски ренесансов драматург е автор на трагедиите „Хамлет“ и „Макбет“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 117,
+    "fields": {
+      "question": 30,
+      "text": "Уилям Шекспир",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 118,
+    "fields": {
+      "question": 30,
+      "text": "Чарлз Дикенс",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 119,
+    "fields": {
+      "question": 30,
+      "text": "Джордж Байрон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 120,
+    "fields": {
+      "question": 30,
+      "text": "Джон Милтън",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 31,
+    "fields": {
+      "category": 4,
+      "text": "Кой български писател е автор на сборниците „Ако можеха да говорят“ и разказа „Серафим“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 121,
+    "fields": {
+      "question": 31,
+      "text": "Йордан Йовков",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 122,
+    "fields": {
+      "question": 31,
+      "text": "Елин Пелин",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 123,
+    "fields": {
+      "question": 31,
+      "text": "Димитър Талев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 124,
+    "fields": {
+      "question": 31,
+      "text": "Димитър Димов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 32,
+    "fields": {
+      "category": 4,
+      "text": "В кой цикъл на Иван Вазов е включена прочутата ода „Опълченците на Шипка“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 125,
+    "fields": {
+      "question": 32,
+      "text": "„Епопея на забравените“",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 126,
+    "fields": {
+      "question": 32,
+      "text": "„Пряпорец и гусла“",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 127,
+    "fields": {
+      "question": 32,
+      "text": "„Поля и гори“",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 128,
+    "fields": {
+      "question": 32,
+      "text": "„Италия“",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 33,
+    "fields": {
+      "category": 5,
+      "text": "Кой гениален ренесансов полимат е нарисувал световноизвестната „Мона Лиза“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 129,
+    "fields": {
+      "question": 33,
+      "text": "Леонардо да Винчи",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 130,
+    "fields": {
+      "question": 33,
+      "text": "Микеланджело",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 131,
+    "fields": {
+      "question": 33,
+      "text": "Рафаело",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 132,
+    "fields": {
+      "question": 33,
+      "text": "Сандро Ботичели",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 34,
+    "fields": {
+      "category": 5,
+      "text": "Кой нидерландски художник постимпресионист е автор на шедьовъра „Звездна нощ“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 133,
+    "fields": {
+      "question": 34,
+      "text": "Винсент ван Гог",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 134,
+    "fields": {
+      "question": 34,
+      "text": "Рембранд",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 135,
+    "fields": {
+      "question": 34,
+      "text": "Клод Моне",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 136,
+    "fields": {
+      "question": 34,
+      "text": "Йоханес Вермер",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 35,
+    "fields": {
+      "category": 5,
+      "text": "В кой световноизвестен парижки музей се съхранява оригиналът на картината „Джокондата“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 137,
+    "fields": {
+      "question": 35,
+      "text": "Лувър",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 138,
+    "fields": {
+      "question": 35,
+      "text": "Музей Орсе",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 139,
+    "fields": {
+      "question": 35,
+      "text": "Прадо",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 140,
+    "fields": {
+      "question": 35,
+      "text": "Уфици",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 36,
+    "fields": {
+      "category": 5,
+      "text": "Кой испански художник е един от бащите на кубизма и автор на антивоенната картина „Герника“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 141,
+    "fields": {
+      "question": 36,
+      "text": "Пабло Пикасо",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 142,
+    "fields": {
+      "question": 36,
+      "text": "Салвадор Дали",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 143,
+    "fields": {
+      "question": 36,
+      "text": "Франсиско Гоя",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 144,
+    "fields": {
+      "question": 36,
+      "text": "Диего Веласкес",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 37,
+    "fields": {
+      "category": 5,
+      "text": "Кой бележит композитор композира величествената Девета симфония с „Ода на радостта“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 145,
+    "fields": {
+      "question": 37,
+      "text": "Лудвиг ван Бетховен",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 146,
+    "fields": {
+      "question": 37,
+      "text": "Волфганг Амадеус Моцарт",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 147,
+    "fields": {
+      "question": 37,
+      "text": "Йохан Себастиан Бах",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 148,
+    "fields": {
+      "question": 37,
+      "text": "Фредерик Шопен",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 38,
+    "fields": {
+      "category": 5,
+      "text": "Кой известен български средновековен храм съдържа уникални реалистични стенописи от 1259 г.?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 149,
+    "fields": {
+      "question": 38,
+      "text": "Боянската църква",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 150,
+    "fields": {
+      "question": 38,
+      "text": "Рилският манастир",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 151,
+    "fields": {
+      "question": 38,
+      "text": "Роженският манастир",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 152,
+    "fields": {
+      "question": 38,
+      "text": "Бачковският манастир",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 39,
+    "fields": {
+      "category": 5,
+      "text": "Кой испански художник сюрреалист създава прочутата творба „Постоянството на паметта“ с топящите се часовници?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 153,
+    "fields": {
+      "question": 39,
+      "text": "Салвадор Дали",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 154,
+    "fields": {
+      "question": 39,
+      "text": "Рене Магрит",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 155,
+    "fields": {
+      "question": 39,
+      "text": "Жоан Миро",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 156,
+    "fields": {
+      "question": 39,
+      "text": "Макс Ернст",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 40,
+    "fields": {
+      "category": 5,
+      "text": "Към кое семейство музикални инструменти принадлежи класическият тромпет?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 157,
+    "fields": {
+      "question": 40,
+      "text": "Медни духови",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 158,
+    "fields": {
+      "question": 40,
+      "text": "Дървени духови",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 159,
+    "fields": {
+      "question": 40,
+      "text": "Струнни",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 160,
+    "fields": {
+      "question": 40,
+      "text": "Ударни",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 41,
+    "fields": {
+      "category": 6,
+      "text": "Колко играчи от един отбор са на терена по време на официален футболен мач?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 161,
+    "fields": {
+      "question": 41,
+      "text": "11",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 162,
+    "fields": {
+      "question": 41,
+      "text": "10",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 163,
+    "fields": {
+      "question": 41,
+      "text": "9",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 164,
+    "fields": {
+      "question": 41,
       "text": "12",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 42,
+    "fields": {
+      "category": 6,
+      "text": "В кой спорт се връчва легендарният клубен трофей „Купа Стенли“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 165,
+    "fields": {
+      "question": 42,
+      "text": "Хокей на лед",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 166,
+    "fields": {
+      "question": 42,
+      "text": "Баскетбол",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 167,
+    "fields": {
+      "question": 42,
+      "text": "Американски футбол",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 168,
+    "fields": {
+      "question": 42,
+      "text": "Бейзбол",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 43,
+    "fields": {
+      "category": 6,
+      "text": "Коя българска лекоатлетка държи световния рекорд в скока на височина от Рим 1987 г.?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 169,
+    "fields": {
+      "question": 43,
+      "text": "Стефка Костадинова",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 170,
+    "fields": {
+      "question": 43,
+      "text": "Йорданка Донкова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 171,
+    "fields": {
+      "question": 43,
+      "text": "Тереза Маринова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 172,
+    "fields": {
+      "question": 43,
+      "text": "Ивет Лалова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 44,
+    "fields": {
+      "category": 6,
+      "text": "Колко играчи от един отбор са едновременно на полето по време на волейболен мач?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 173,
+    "fields": {
+      "question": 44,
+      "text": "6",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 174,
+    "fields": {
+      "question": 44,
+      "text": "5",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 175,
+    "fields": {
+      "question": 44,
+      "text": "7",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 176,
+    "fields": {
+      "question": 44,
+      "text": "8",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 45,
+    "fields": {
+      "category": 6,
+      "text": "Кой български футболист печели най-престижния индивидуален приз „Златната топка“ през 1994 г.?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 177,
+    "fields": {
+      "question": 45,
+      "text": "Христо Стоичков",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 178,
+    "fields": {
+      "question": 45,
+      "text": "Димитър Бербатов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 179,
+    "fields": {
+      "question": 45,
+      "text": "Георги Аспарухов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 180,
+    "fields": {
+      "question": 45,
+      "text": "Красимир Балъков",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 46,
+    "fields": {
+      "category": 6,
+      "text": "Колко точки носи точно попадение отвъд линията за 3 точки в баскетбола?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 181,
+    "fields": {
+      "question": 46,
+      "text": "3",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 182,
+    "fields": {
+      "question": 46,
+      "text": "2",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 183,
+    "fields": {
+      "question": 46,
+      "text": "4",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 184,
+    "fields": {
+      "question": 46,
+      "text": "1",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 47,
+    "fields": {
+      "category": 6,
+      "text": "В кой европейски град се провеждат първите модерни олимпийски игри през 1896 г.?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 185,
+    "fields": {
+      "question": 47,
+      "text": "Атина",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 186,
+    "fields": {
+      "question": 47,
+      "text": "Париж",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 187,
+    "fields": {
+      "question": 47,
+      "text": "Лондон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 188,
+    "fields": {
+      "question": 47,
+      "text": "Берлин",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 48,
+    "fields": {
+      "category": 6,
+      "text": "Кой български тенисист спечели титлата от Финалите на ATP в Лондон през ноември 2017 г.?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 189,
+    "fields": {
+      "question": 48,
+      "text": "Григор Димитров",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 190,
+    "fields": {
+      "question": 48,
+      "text": "Тодор Енев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 191,
+    "fields": {
+      "question": 48,
+      "text": "Адриан Андреев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 192,
+    "fields": {
+      "question": 48,
+      "text": "Димитър Кузманов",
       "is_correct": false
     }
   },
@@ -591,6 +2175,24 @@
     "model": "questions.numericquestion",
     "pk": 3,
     "fields": {
+      "category": 1,
+      "text": "През коя година е извършено Съединението на Княжество България и Източна Румелия?",
+      "correct_answer": 1885
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "text": "През коя година цар Иван Асен II побеждава Теодор Комнин в битката при Клокотница?",
+      "correct_answer": 1230
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 5,
+    "fields": {
       "category": 2,
       "text": "Каква е точната надморска височина в метри на най-високия балкански връх Мусала?",
       "correct_answer": 2925
@@ -598,7 +2200,7 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 4,
+    "pk": 6,
     "fields": {
       "category": 2,
       "text": "Колко съседни държави има Република България по своите сухопътни граници?",
@@ -607,7 +2209,25 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 5,
+    "pk": 7,
+    "fields": {
+      "category": 2,
+      "text": "Колко на брой са емблематичните ледникови езера в природния циркус Седемте рилски езера?",
+      "correct_answer": 7
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 8,
+    "fields": {
+      "category": 2,
+      "text": "Каква е надморската височина в метри на Черни връх, първенеца на Витоша?",
+      "correct_answer": 2290
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 9,
     "fields": {
       "category": 3,
       "text": "При колко градуса по Целзий кипи чистата вода при стандартно атмосферно налягане на морското равнище?",
@@ -616,7 +2236,7 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 6,
+    "pk": 10,
     "fields": {
       "category": 3,
       "text": "Колко хромозома съдържа нормалната човешка телесна клетка?",
@@ -625,7 +2245,25 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 7,
+    "pk": 11,
+    "fields": {
+      "category": 3,
+      "text": "Какъв е атомният номер на първия елемент водород в периодичната система?",
+      "correct_answer": 1
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 12,
+    "fields": {
+      "category": 3,
+      "text": "Колко основни планети обикалят около Слънцето в нашата Слънчева система?",
+      "correct_answer": 8
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 13,
     "fields": {
       "category": 4,
       "text": "През коя година излиза първото самостоятелно българско издание на романа „Под игото“?",
@@ -634,7 +2272,7 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 8,
+    "pk": 14,
     "fields": {
       "category": 4,
       "text": "Колко стиха съдържа едно класическо сонетно стихотворение?",
@@ -643,7 +2281,25 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 9,
+    "pk": 15,
+    "fields": {
+      "category": 4,
+      "text": "Колко композиционни части (глави) съдържа поемата „Септември“ на поета Гео Милев?",
+      "correct_answer": 12
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 16,
+    "fields": {
+      "category": 4,
+      "text": "През коя година Христо Ботев публикува знаменитото стихотворение „Моята молитва“?",
+      "correct_answer": 1875
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 17,
     "fields": {
       "category": 5,
       "text": "През кой век (напр. 15, 16, 17) Микеланджело завършва прочутите стенописи на Сикстинската капела?",
@@ -652,7 +2308,7 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 10,
+    "pk": 18,
     "fields": {
       "category": 5,
       "text": "Колко струни има стандартната класическа акустична китара?",
@@ -661,7 +2317,25 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 11,
+    "pk": 19,
+    "fields": {
+      "category": 5,
+      "text": "Колко клавиша (бели и черни) има стандартната пълноразмерна клавиатура на модерно пиано?",
+      "correct_answer": 88
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 20,
+    "fields": {
+      "category": 5,
+      "text": "През коя година от XIII век (12xx) са изписани прочутите стенописи в Боянската църква?",
+      "correct_answer": 1259
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 21,
     "fields": {
       "category": 6,
       "text": "През коя година националният отбор на България по футбол постига историческото 4-то място на Световното първенство в САЩ?",
@@ -670,11 +2344,29 @@
   },
   {
     "model": "questions.numericquestion",
-    "pk": 12,
+    "pk": 22,
     "fields": {
       "category": 6,
       "text": "Колко минути продължава стандартното полувреме в редовното време на футболен мач?",
       "correct_answer": 45
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 23,
+    "fields": {
+      "category": 6,
+      "text": "Колко сантиметра е световният рекорд на Стефка Костадинова в скока на височина?",
+      "correct_answer": 209
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 24,
+    "fields": {
+      "category": 6,
+      "text": "Колко баскетболисти от един отбор са едновременно на игралния терен по време на мач?",
+      "correct_answer": 5
     }
   }
 ]

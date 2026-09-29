@@ -10,9 +10,9 @@ class FixtureTests(TestCase):
     def test_fixture_loading_counts(self):
         """Зареждане на fixture: проверка на точния брой записи."""
         self.assertEqual(Category.objects.count(), 6)
-        self.assertEqual(ChoiceQuestion.objects.count(), 12)
-        self.assertEqual(AnswerOption.objects.count(), 48)
-        self.assertEqual(NumericQuestion.objects.count(), 12)
+        self.assertEqual(ChoiceQuestion.objects.count(), 48)
+        self.assertEqual(AnswerOption.objects.count(), 192)
+        self.assertEqual(NumericQuestion.objects.count(), 24)
 
     def test_fixture_choice_questions_validity(self):
         """Валидност на fixture данните: всеки choice въпрос има 4 отговора и точно 1 правилен."""
