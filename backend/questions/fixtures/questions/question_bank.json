@@ -1,0 +1,680 @@
+[
+  {
+    "model": "questions.category",
+    "pk": 1,
+    "fields": {
+      "name": "История"
+    }
+  },
+  {
+    "model": "questions.category",
+    "pk": 2,
+    "fields": {
+      "name": "География"
+    }
+  },
+  {
+    "model": "questions.category",
+    "pk": 3,
+    "fields": {
+      "name": "Наука"
+    }
+  },
+  {
+    "model": "questions.category",
+    "pk": 4,
+    "fields": {
+      "name": "Литература"
+    }
+  },
+  {
+    "model": "questions.category",
+    "pk": 5,
+    "fields": {
+      "name": "Изкуство"
+    }
+  },
+  {
+    "model": "questions.category",
+    "pk": 6,
+    "fields": {
+      "name": "Спорт"
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "text": "През коя година е основана българската държава от хан Аспарух?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 1,
+    "fields": {
+      "question": 1,
+      "text": "681 г.",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 2,
+    "fields": {
+      "question": 1,
+      "text": "865 г.",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 3,
+    "fields": {
+      "question": 1,
+      "text": "1018 г.",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 4,
+    "fields": {
+      "question": 1,
+      "text": "1185 г.",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "text": "Кой български владетел въвежда християнството като официална религия в България?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 5,
+    "fields": {
+      "question": 2,
+      "text": "Княз Борис I",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 6,
+    "fields": {
+      "question": 2,
+      "text": "Цар Симеон I",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 7,
+    "fields": {
+      "question": 2,
+      "text": "Хан Крум",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 8,
+    "fields": {
+      "question": 2,
+      "text": "Цар Калоян",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "text": "Кой е най-високият връх в България и на Балканския полуостров?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 9,
+    "fields": {
+      "question": 3,
+      "text": "Мусала",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 10,
+    "fields": {
+      "question": 3,
+      "text": "Вихрен",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 11,
+    "fields": {
+      "question": 3,
+      "text": "Ботев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 12,
+    "fields": {
+      "question": 3,
+      "text": "Черни връх",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "text": "Коя река представлява естествената северна граница на България с Румъния?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 13,
+    "fields": {
+      "question": 4,
+      "text": "Дунав",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 14,
+    "fields": {
+      "question": 4,
+      "text": "Марица",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 15,
+    "fields": {
+      "question": 4,
+      "text": "Искър",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 16,
+    "fields": {
+      "question": 4,
+      "text": "Струма",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 5,
+    "fields": {
+      "category": 3,
+      "text": "Коя планета в Слънчевата система е най-близо до Слънцето?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 17,
+    "fields": {
+      "question": 5,
+      "text": "Меркурий",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 18,
+    "fields": {
+      "question": 5,
+      "text": "Венера",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 19,
+    "fields": {
+      "question": 5,
+      "text": "Марс",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 20,
+    "fields": {
+      "question": 5,
+      "text": "Юпитер",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 6,
+    "fields": {
+      "category": 3,
+      "text": "Какъв е химичният символ на химичния елемент злато?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 21,
+    "fields": {
+      "question": 6,
+      "text": "Au",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 22,
+    "fields": {
+      "question": 6,
+      "text": "Ag",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 23,
+    "fields": {
+      "question": 6,
+      "text": "Fe",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 24,
+    "fields": {
+      "question": 6,
+      "text": "Cu",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 7,
+    "fields": {
+      "category": 4,
+      "text": "Кой е авторът на първия български роман „Под игото“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 25,
+    "fields": {
+      "question": 7,
+      "text": "Иван Вазов",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 26,
+    "fields": {
+      "question": 7,
+      "text": "Христо Ботев",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 27,
+    "fields": {
+      "question": 7,
+      "text": "Алеко Константинов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 28,
+    "fields": {
+      "question": 7,
+      "text": "Елин Пелин",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 8,
+    "fields": {
+      "category": 4,
+      "text": "Кой емблематичен герой от българската литература е създаден от Алеко Константинов?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 29,
+    "fields": {
+      "question": 8,
+      "text": "Бай Ганьо",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 30,
+    "fields": {
+      "question": 8,
+      "text": "Андрешко",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 31,
+    "fields": {
+      "question": 8,
+      "text": "Бойчо Огнянов",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 32,
+    "fields": {
+      "question": 8,
+      "text": "Косачът Лазо",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 9,
+    "fields": {
+      "category": 5,
+      "text": "Кой гениален ренесансов художник е автор на портрета „Мона Лиза“?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 33,
+    "fields": {
+      "question": 9,
+      "text": "Леонардо да Винчи",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 34,
+    "fields": {
+      "question": 9,
+      "text": "Микеланджело Буонароти",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 35,
+    "fields": {
+      "question": 9,
+      "text": "Рафаело Санцио",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 36,
+    "fields": {
+      "question": 9,
+      "text": "Винсент ван Гог",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 10,
+    "fields": {
+      "category": 5,
+      "text": "В кой европейски град се намира световноизвестният музей Лувъра?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 37,
+    "fields": {
+      "question": 10,
+      "text": "Париж",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 38,
+    "fields": {
+      "question": 10,
+      "text": "Рим",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 39,
+    "fields": {
+      "question": 10,
+      "text": "Лондон",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 40,
+    "fields": {
+      "question": 10,
+      "text": "Мадрид",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 11,
+    "fields": {
+      "category": 6,
+      "text": "Коя българска лекоатлетка постави световен рекорд в скока на височина с резултат 209 см?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 41,
+    "fields": {
+      "question": 11,
+      "text": "Стефка Костадинова",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 42,
+    "fields": {
+      "question": 11,
+      "text": "Йорданка Донкова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 43,
+    "fields": {
+      "question": 11,
+      "text": "Тереза Маринова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 44,
+    "fields": {
+      "question": 11,
+      "text": "Ивет Лалова",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.choicequestion",
+    "pk": 12,
+    "fields": {
+      "category": 6,
+      "text": "Колко играчи от един отбор са на терена по време на официален футболен мач?"
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 45,
+    "fields": {
+      "question": 12,
+      "text": "11",
+      "is_correct": true
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 46,
+    "fields": {
+      "question": 12,
+      "text": "10",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 47,
+    "fields": {
+      "question": 12,
+      "text": "9",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.answeroption",
+    "pk": 48,
+    "fields": {
+      "question": 12,
+      "text": "12",
+      "is_correct": false
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "text": "През коя година България е освободена от османско владичество след Руско-турската война?",
+      "correct_answer": 1878
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "text": "През коя година тържествено е обявена Независимостта на България в град Велико Търново?",
+      "correct_answer": 1908
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "text": "Каква е точната надморска височина в метри на най-високия балкански връх Мусала?",
+      "correct_answer": 2925
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "text": "Колко съседни държави има Република България по своите сухопътни граници?",
+      "correct_answer": 5
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 5,
+    "fields": {
+      "category": 3,
+      "text": "При колко градуса по Целзий кипи чистата вода при стандартно атмосферно налягане на морското равнище?",
+      "correct_answer": 100
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 6,
+    "fields": {
+      "category": 3,
+      "text": "Колко хромозома съдържа нормалната човешка телесна клетка?",
+      "correct_answer": 46
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 7,
+    "fields": {
+      "category": 4,
+      "text": "През коя година излиза първото самостоятелно българско издание на романа „Под игото“?",
+      "correct_answer": 1894
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 8,
+    "fields": {
+      "category": 4,
+      "text": "Колко стиха съдържа едно класическо сонетно стихотворение?",
+      "correct_answer": 14
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 9,
+    "fields": {
+      "category": 5,
+      "text": "През кой век (напр. 15, 16, 17) Микеланджело завършва прочутите стенописи на Сикстинската капела?",
+      "correct_answer": 16
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 10,
+    "fields": {
+      "category": 5,
+      "text": "Колко струни има стандартната класическа акустична китара?",
+      "correct_answer": 6
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 11,
+    "fields": {
+      "category": 6,
+      "text": "През коя година националният отбор на България по футбол постига историческото 4-то място на Световното първенство в САЩ?",
+      "correct_answer": 1994
+    }
+  },
+  {
+    "model": "questions.numericquestion",
+    "pk": 12,
+    "fields": {
+      "category": 6,
+      "text": "Колко минути продължава стандартното полувреме в редовното време на футболен мач?",
+      "correct_answer": 45
+    }
+  }
+]

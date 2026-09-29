@@ -73,3 +73,10 @@ export const authApi = {
   getMe: () => apiRequest('/api/auth/me/', 'GET'),
   updateProfile: (payload) => apiRequest('/api/auth/me/', 'PATCH', payload),
 };
+
+// Questions API methods
+export const questionsApi = {
+  getRandom: () => apiRequest('/api/questions/random/', 'GET'),
+  getAll: () => apiRequest('/api/questions/', 'GET'),
+};
+
