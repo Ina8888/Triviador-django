@@ -2,23 +2,15 @@
 
 Мултиплейър тривия стратегическа игра, разработена за курса по **Интернет програмиране**.
 
-## Технологичен стек
 
-- **Backend**: Python 3.11+, Django 5.2 LTS, Django REST Framework
-- **База данни**: SQLite
-- **Frontend**: React, Vite
-- **Автентикация**: Django Session Authentication с CSRF защита
-
----
-
-## Структура на проекта
+## Структура
 
 ```text
 quiz-conquest/
 ├── backend/
-│   ├── accounts/          # Milestone 1: Custom User & Profile, Session Auth, API
-│   ├── config/            # Основни Django настройки и routing
-│   ├── questions/         # Milestone 2: Категории, Въпроси, Фикстури, Admin
+│   ├── accounts/         
+│   ├── config/          
+│   ├── questions/    
 │   │   ├── fixtures/
 │   │   │   └── questions/
 │   │   │       └── question_bank.json
@@ -57,7 +49,7 @@ python -m pip install -r requirements.txt
 python manage.py migrate
 ```
 
-#### Зареждане на началната банка с въпроси (Fixture)
+#### Зареждане на началната банка с въпроси
 
 ```powershell
 python manage.py loaddata questions/question_bank.json
