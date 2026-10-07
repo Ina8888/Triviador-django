@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Player, Round
+from .models import Game, Player, Round, Territory, Capital
 
 
 class PlayerInline(admin.TabularInline):
@@ -37,3 +37,64 @@ class PlayerAdmin(admin.ModelAdmin):
 class RoundAdmin(admin.ModelAdmin):
     list_display = ("game", "number", "type", "status", "winner", "created_at", "completed_at")
     list_filter = ("game", "type", "status")
+
+
+@admin.register(Territory)
+class TerritoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "game", "owner", "score", "neighbors_display")
+    search_fields = ("name", "slug")
+    list_filter = ("game", "owner")
+    readonly_fields = ("neighbors_display",)
+
+    @admin.display(description="Neighbors")
+    def neighbors_display(self, obj):
+        if not obj or not obj.pk:
+            return "-"
+        return ", ".join(n.slug for n in obj.neighbors.all()) or "-"
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            # Protect map structure: game, identity, and neighbor links are read-only
+            return ("game", "name", "slug", "neighbors") + self.readonly_fields
+        return self.readonly_fields
+
+    def has_add_permission(self, request):
+        # Structural protection: territories are managed by game initialization (M05)
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        # Structural protection: territories cannot be arbitrarily deleted
+        return False
+
+    def save_model(self, request, obj, form, change):
+        obj.full_clean()
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(Capital)
+class CapitalAdmin(admin.ModelAdmin):
+    list_display = ("player", "territory", "health", "get_game")
+    search_fields = ("player__user__username", "territory__name")
+    list_filter = ("territory__game",)
+
+    @admin.display(description="Game")
+    def get_game(self, obj):
+        return obj.territory.game if obj.territory else "-"
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            # Protect links: player and territory cannot be arbitrarily swapped
+            return ("player", "territory")
+        return ()
+
+    def has_add_permission(self, request):
+        # Structural protection: capitals are managed by M05 gameplay
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        # Structural protection: capitals cannot be arbitrarily deleted
+        return False
+
+    def save_model(self, request, obj, form, change):
+        obj.full_clean()
+        super().save_model(request, obj, form, change)

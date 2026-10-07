@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import models
 from django.utils import timezone
 
@@ -89,6 +89,13 @@ class Player(models.Model):
         if not self.pk and self.game_id and self.game.players.count() >= 3:
             raise ValidationError("A game cannot have more than 3 players.")
 
+    def get_capital(self):
+        """Return the player's capital if one exists, otherwise None."""
+        try:
+            return self.capital
+        except ObjectDoesNotExist:
+            return None
+
     def __str__(self):
         return f"{self.user} in Game #{self.game_id} ({self.color})"
 
@@ -164,3 +171,104 @@ class Round(models.Model):
 
     def __str__(self):
         return f"Round {self.number} of Game #{self.game_id} ({self.status})"
+
+
+class Territory(models.Model):
+    """A map territory belonging to a specific game session."""
+
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE,
+        related_name="territories",
+    )
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50)
+    neighbors = models.ManyToManyField(
+        "self",
+        symmetrical=True,
+        blank=True,
+    )
+    owner = models.ForeignKey(
+        Player,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="territories",
+    )
+    score = models.IntegerField(default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["game", "name"],
+                name="unique_territory_name_per_game",
+            ),
+            models.UniqueConstraint(
+                fields=["game", "slug"],
+                name="unique_territory_slug_per_game",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(score__gte=0),
+                name="territory_score_gte_0",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        if self.score is not None and self.score < 0:
+            raise ValidationError({"score": "Territory score cannot be negative."})
+        if self.owner_id and self.owner.game_id != self.game_id:
+            raise ValidationError({"owner": "Territory owner must belong to the same game."})
+        if self.pk:
+            for neighbor in self.neighbors.all():
+                if neighbor.game_id != self.game_id:
+                    raise ValidationError(
+                        {"neighbors": f"Neighbor '{neighbor.slug}' belongs to a different game."}
+                    )
+                if neighbor.pk == self.pk:
+                    raise ValidationError(
+                        {"neighbors": "A territory cannot be its own neighbor."}
+                    )
+
+    def __str__(self):
+        return f"{self.name} ({self.slug}) [Game #{self.game_id}]"
+
+
+class Capital(models.Model):
+    """The capital fortress of a player on a specific territory."""
+
+    territory = models.OneToOneField(
+        Territory,
+        on_delete=models.CASCADE,
+        related_name="capital",
+    )
+    player = models.OneToOneField(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="capital",
+    )
+    health = models.IntegerField(default=3)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(health__gte=0, health__lte=3),
+                name="capital_health_between_0_and_3",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        if self.health is not None and (self.health < 0 or self.health > 3):
+            raise ValidationError({"health": "Capital health must be between 0 and 3."})
+        if self.player_id and self.territory_id:
+            if self.player.game_id != self.territory.game_id:
+                raise ValidationError("Player and territory must belong to the same game.")
+            if self.territory.owner_id != self.player_id:
+                raise ValidationError(
+                    {"territory": "Capital territory must be owned by the capital player."}
+                )
+
+    def __str__(self):
+        return f"Capital of {self.player} at {self.territory.name} (Health: {self.health})"
+

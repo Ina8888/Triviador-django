@@ -85,8 +85,39 @@ npm run dev
 
 ---
 
+## Карта на проекта (M04 — Territories and Map)
+
+Проектната карта съдържа **18 територии** (кратни на 3, между 9 и 21) с български географски и исторически имена, симетрични връзки и гарантирана свързаност на графа.
+
+| № | Територия | Slug | Съседни територии (Neighbors) |
+|---|---|---|---|
+| 1 | Скали | `skali` | `dunaviya`, `sredets` |
+| 2 | Дунавия | `dunaviya` | `skali`, `zhitno-pole`, `sredets` |
+| 3 | Житно поле | `zhitno-pole` | `dunaviya`, `leventa`, `balkania` |
+| 4 | Левента | `leventa` | `zhitno-pole`, `pelikania`, `madara` |
+| 5 | Пеликания | `pelikania` | `leventa`, `kaliakra`, `madara` |
+| 6 | Калиакра | `kaliakra` | `pelikania`, `madara`, `slanchevo` |
+| 7 | Средец | `sredets` | `skali`, `dunaviya`, `ezera`, `balkania`, `rozova-dolina` |
+| 8 | Балкания | `balkania` | `zhitno-pole`, `sredets`, `tsarevo`, `rozova-dolina` |
+| 9 | Царево | `tsarevo` | `balkania`, `madara`, `chuden-kray`, `rozova-dolina` |
+| 10 | Мадара | `madara` | `leventa`, `pelikania`, `kaliakra`, `tsarevo`, `chuden-kray` |
+| 11 | Езера | `ezera` | `sredets`, `pirina`, `rozova-dolina` |
+| 12 | Пирина | `pirina` | `ezera`, `zlaten-grozd`, `karakachan` |
+| 13 | Розова долина | `rozova-dolina` | `sredets`, `balkania`, `tsarevo`, `ezera`, `zlaten-grozd` |
+| 14 | Чуден край | `chuden-kray` | `tsarevo`, `madara`, `kukeri`, `slanchevo` |
+| 15 | Златен грозд | `zlaten-grozd` | `rozova-dolina`, `pirina`, `karakachan`, `kukeri` |
+| 16 | Кукери | `kukeri` | `zlaten-grozd`, `chuden-kray`, `karakachan`, `slanchevo` |
+| 17 | Каракачан | `karakachan` | `pirina`, `zlaten-grozd`, `kukeri` |
+| 18 | Слънчево | `slanchevo` | `kaliakra`, `chuden-kray`, `kukeri` |
+
+> **Забележка**: Инициализацията на картата при създаване на игра и разпределението на столиците ще се извършват в **M05**. В M04 се въвеждат самите модели, дефиницията на графа, валидациите и защитите в Django Admin.
+
+---
+
 ## Завършени етапи (Milestones)
 
 - `m0-setup` — Начална структура, Django 5.2, DRF, React + Vite
 - `m1-auth` — Custom User модел, профил с аватари, сесийна автентикация, CSRF защита
 - `m2-question-bank` — Модели на въпроси (Choice & Numeric), категории, Django Admin, Fixture банка и тестове
+- `m3-games-and-rounds` — Модели `Game`, `Player`, `Round`, constraints за 3 играчи, жизнен цикъл и тестове
+- `m4-territories-and-map` — Модели `Territory` и `Capital`, 18-територийна проектна карта, валидация на графа, Django Admin и тестове
