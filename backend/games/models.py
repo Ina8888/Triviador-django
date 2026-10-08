@@ -41,6 +41,11 @@ class Game(models.Model):
         self.status = self.Status.COMPLETED
         self.save()
 
+    def initialize(self, random_generator=None, map_definition=None):
+        """Initialize game: create territories, assign capitals, and transition to active."""
+        from .services import initialize_game
+        return initialize_game(self, random_generator=random_generator, map_definition=map_definition)
+
     def __str__(self):
         return f"Game #{self.pk} ({self.status})"
 
@@ -86,8 +91,17 @@ class Player(models.Model):
 
     def clean(self):
         super().clean()
-        if not self.pk and self.game_id and self.game.players.count() >= 3:
-            raise ValidationError("A game cannot have more than 3 players.")
+        if not self.pk and self.game_id:
+            if self.game.status != Game.Status.WAITING:
+                raise ValidationError("Cannot add players to an active or completed game.")
+            if self.game.players.count() >= 3:
+                raise ValidationError("A game cannot have more than 3 players.")
+
+    def remove(self):
+        """Application operation to remove player from a game prior to start."""
+        if self.game.status != Game.Status.WAITING:
+            raise ValidationError("Cannot remove players from an active or completed game.")
+        self.delete()
 
     def get_capital(self):
         """Return the player's capital if one exists, otherwise None."""

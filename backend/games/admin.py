@@ -32,6 +32,11 @@ class PlayerAdmin(admin.ModelAdmin):
     list_filter = ("game", "color")
     search_fields = ("user__username",)
 
+    def has_delete_permission(self, request, obj=None):
+        if obj and obj.game.status != Game.Status.WAITING:
+            return False
+        return super().has_delete_permission(request, obj)
+
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
