@@ -26,6 +26,7 @@ function createInitialMatch() {
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [initializing, setInitializing] = useState(true)
+  const [backendOffline, setBackendOffline] = useState(false)
   const [currentView, setCurrentView] = useState('auth') // 'auth' | 'lobby' | 'game'
   const [savedMatch, setSavedMatch] = useState(null)
   const [matchData, setMatchData] = useState(null)
@@ -49,13 +50,19 @@ export default function App() {
         if (res.ok && res.data) {
           setCurrentUser(res.data)
           setCurrentView('lobby')
+          setBackendOffline(false)
         } else {
           setCurrentUser(null)
           setCurrentView('auth')
+          if (res.status === 0 || res.status >= 500) {
+            setBackendOffline(true)
+          }
         }
       })
       .catch(() => {
+        setCurrentUser(null)
         setCurrentView('auth')
+        setBackendOffline(true)
       })
       .finally(() => {
         setInitializing(false)
@@ -133,6 +140,13 @@ export default function App() {
 
   return (
     <main className="app-shell medieval-theme">
+      {backendOffline && (
+        <div className="backend-offline-banner">
+          ⚠️ <strong>Бекендът не отговаря!</strong> Стартирайте Django в отделен PowerShell терминал с:{' '}
+          <code>python manage.py runserver</code>
+        </div>
+      )}
+
       {currentView === 'auth' && (
         <AuthView onAuthSuccess={handleAuthSuccess} />
       )}

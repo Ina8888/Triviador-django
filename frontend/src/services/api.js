@@ -18,50 +18,82 @@ export function getCookie(name) {
 export async function ensureCsrfToken() {
   let token = getCookie('csrftoken');
   if (!token) {
-    await fetch('/api/auth/csrf/', {
-      method: 'GET',
-      credentials: 'include',
-    });
-    token = getCookie('csrftoken');
+    try {
+      await fetch('/api/auth/csrf/', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      token = getCookie('csrftoken');
+    } catch (err) {
+      console.warn('Could not fetch CSRF token:', err);
+    }
   }
   return token;
 }
 
-// Base API fetcher with CSRF and credentials
+// Base API fetcher with CSRF, credentials, and robust error handling
 export async function apiRequest(url, method = 'GET', data = null) {
-  const options = {
-    method,
-    headers: {
-      'Accept': 'application/json',
-    },
-    credentials: 'include',
-  };
+  try {
+    const options = {
+      method,
+      headers: {
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+    };
 
-  if (['POST', 'PATCH', 'PUT', 'DELETE'].includes(method.toUpperCase())) {
-    const csrfToken = await ensureCsrfToken();
-    if (csrfToken) {
-      options.headers['X-CSRFToken'] = csrfToken;
+    if (['POST', 'PATCH', 'PUT', 'DELETE'].includes(method.toUpperCase())) {
+      const csrfToken = await ensureCsrfToken();
+      if (csrfToken) {
+        options.headers['X-CSRFToken'] = csrfToken;
+      }
     }
+
+    if (data) {
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(url, options);
+
+    if (response.status === 204) {
+      return { ok: true, data: null };
+    }
+
+    let json = null;
+    try {
+      json = await response.json();
+    } catch {
+      // Non-JSON response (e.g. 500 HTML/text from proxy or server)
+    }
+
+    if (!response.ok) {
+      let errors = {};
+      if (json && typeof json === 'object') {
+        errors = json.errors || json;
+      } else {
+        errors = {
+          detail:
+            response.status === 500 || response.status === 502 || response.status === 504
+              ? 'Сървърът не отговаря (възможно е Django да не е стартиран на порт 8000).'
+              : `Грешка ${response.status}: Сървърът върна неочакван отговор.`,
+        };
+      }
+      return { ok: false, status: response.status, errors };
+    }
+
+    return { ok: true, status: response.status, data: json };
+  } catch (err) {
+    console.error(`API request error on ${url}:`, err);
+    return {
+      ok: false,
+      status: 0,
+      errors: {
+        detail:
+          'Няма връзка с Django сървъра. Моля, стартирайте бекенда в отделен терминал с: python manage.py runserver',
+      },
+    };
   }
-
-  if (data) {
-    options.headers['Content-Type'] = 'application/json';
-    options.body = JSON.stringify(data);
-  }
-
-  const response = await fetch(url, options);
-
-  if (response.status === 204) {
-    return { ok: true, data: null };
-  }
-
-  const json = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    return { ok: false, status: response.status, errors: json?.errors || json || {} };
-  }
-
-  return { ok: true, status: response.status, data: json };
 }
 
 // Authentication API methods
@@ -79,4 +111,3 @@ export const questionsApi = {
   getRandom: () => apiRequest('/api/questions/random/', 'GET'),
   getAll: () => apiRequest('/api/questions/', 'GET'),
 };
-

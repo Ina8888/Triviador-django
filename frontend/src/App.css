@@ -75,6 +75,28 @@ body {
   font-weight: 700;
 }
 
+/* Offline Backend Notification Banner */
+.backend-offline-banner {
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 auto 16px auto;
+  max-width: 680px;
+  border-radius: 4px;
+}
+
+.backend-offline-banner code {
+  background: var(--ink);
+  color: var(--yellow);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
 /* ==========================================================================
    SOLID HIGH-CONTRAST BUTTONS (NO GRADIENTS)
    ========================================================================== */

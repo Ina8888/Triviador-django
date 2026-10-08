@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { authApi } from '../services/api'
 
+function formatError(val) {
+  if (!val) return null
+  if (Array.isArray(val)) return val.join(' ')
+  if (typeof val === 'object') return Object.values(val).flat().join(' ')
+  return String(val)
+}
+
 export default function AuthView({ onAuthSuccess }) {
   const [tab, setTab] = useState('login') // 'login' or 'register'
   const [loading, setLoading] = useState(false)
@@ -26,25 +33,36 @@ export default function AuthView({ onAuthSuccess }) {
     setErrorMsg(null)
     setFieldErrors({})
 
-    const res = await authApi.login(loginForm)
-    setLoading(false)
+    try {
+      const res = await authApi.login(loginForm)
 
-    if (res.ok) {
-      onAuthSuccess(res.data)
-    } else {
-      if (res.errors) {
-        if (typeof res.errors === 'string') {
-          setErrorMsg(res.errors)
-        } else if (res.errors.non_field_errors) {
-          setErrorMsg(res.errors.non_field_errors.join(' '))
-        } else if (res.errors.detail) {
-          setErrorMsg(res.errors.detail)
-        } else {
-          setFieldErrors(res.errors)
-        }
+      if (res.ok) {
+        onAuthSuccess(res.data)
       } else {
-        setErrorMsg('Грешно потребителско име или парола.')
+        const errs = res.errors || {}
+        if (typeof errs === 'string') {
+          setErrorMsg(errs)
+        } else if (errs.detail) {
+          setErrorMsg(formatError(errs.detail))
+        } else if (errs.non_field_errors) {
+          setErrorMsg(formatError(errs.non_field_errors))
+        } else if (Object.keys(errs).length > 0) {
+          setFieldErrors(errs)
+          const knownFields = ['username', 'password']
+          const hasKnown = knownFields.some((f) => errs[f])
+          if (!hasKnown) {
+            const first = Object.values(errs)[0]
+            setErrorMsg(formatError(first))
+          }
+        } else {
+          setErrorMsg('Грешно потребителско име или парола.')
+        }
       }
+    } catch (err) {
+      console.error('Login submit error:', err)
+      setErrorMsg('Възникна неочаквана грешка при входа.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -54,30 +72,53 @@ export default function AuthView({ onAuthSuccess }) {
     setErrorMsg(null)
     setFieldErrors({})
 
-    const res = await authApi.register(registerForm)
-    setLoading(false)
-
-    if (res.ok) {
-      setSuccessMsg('Регистрацията бе успешна! Влизане...')
-      const loginRes = await authApi.login({
-        username: registerForm.username,
-        password: registerForm.password,
-      })
-      if (loginRes.ok) {
-        onAuthSuccess(loginRes.data)
-      } else {
-        setTab('login')
+    try {
+      if (registerForm.password !== registerForm.password_confirm) {
+        setFieldErrors({ password_confirm: ['Паролите не съвпадат.'] })
+        setErrorMsg('Паролите не съвпадат.')
+        setLoading(false)
+        return
       }
-    } else {
-      if (res.errors) {
-        if (typeof res.errors === 'string') {
-          setErrorMsg(res.errors)
+
+      const res = await authApi.register(registerForm)
+
+      if (res.ok) {
+        setSuccessMsg('Регистрацията бе успешна! Влизане...')
+        const loginRes = await authApi.login({
+          username: registerForm.username,
+          password: registerForm.password,
+        })
+        if (loginRes.ok) {
+          onAuthSuccess(loginRes.data)
         } else {
-          setFieldErrors(res.errors)
+          setTab('login')
+          setErrorMsg('Регистрацията бе успешна! Моля, влезте с новия си профил.')
         }
       } else {
-        setErrorMsg('Неуспешна регистрация. Проверете въведените данни.')
+        const errs = res.errors || {}
+        if (typeof errs === 'string') {
+          setErrorMsg(errs)
+        } else if (errs.detail) {
+          setErrorMsg(formatError(errs.detail))
+        } else if (errs.non_field_errors) {
+          setErrorMsg(formatError(errs.non_field_errors))
+        } else if (Object.keys(errs).length > 0) {
+          setFieldErrors(errs)
+          const knownFields = ['username', 'email', 'nickname', 'password', 'password_confirm']
+          const hasKnown = knownFields.some((f) => errs[f])
+          if (!hasKnown) {
+            const first = Object.values(errs)[0]
+            setErrorMsg(formatError(first))
+          }
+        } else {
+          setErrorMsg('Неуспешна регистрация. Моля, проверете въведените данни.')
+        }
       }
+    } catch (err) {
+      console.error('Register submit error:', err)
+      setErrorMsg('Възникна неочаквана грешка при регистрацията.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -137,7 +178,7 @@ export default function AuthView({ onAuthSuccess }) {
                 className={fieldErrors.username ? 'input-err' : ''}
               />
               {fieldErrors.username && (
-                <span className="field-err-msg">{fieldErrors.username.join(' ')}</span>
+                <span className="field-err-msg">{formatError(fieldErrors.username)}</span>
               )}
             </div>
 
@@ -152,7 +193,7 @@ export default function AuthView({ onAuthSuccess }) {
                 className={fieldErrors.password ? 'input-err' : ''}
               />
               {fieldErrors.password && (
-                <span className="field-err-msg">{fieldErrors.password.join(' ')}</span>
+                <span className="field-err-msg">{formatError(fieldErrors.password)}</span>
               )}
             </div>
 
@@ -169,6 +210,7 @@ export default function AuthView({ onAuthSuccess }) {
                 onClick={() => {
                   setTab('register')
                   setErrorMsg(null)
+                  setFieldErrors({})
                 }}
               >
                 Създайте рицар тук
@@ -189,7 +231,7 @@ export default function AuthView({ onAuthSuccess }) {
                 className={fieldErrors.username ? 'input-err' : ''}
               />
               {fieldErrors.username && (
-                <span className="field-err-msg">{fieldErrors.username.join(' ')}</span>
+                <span className="field-err-msg">{formatError(fieldErrors.username)}</span>
               )}
             </div>
 
@@ -204,7 +246,7 @@ export default function AuthView({ onAuthSuccess }) {
                 className={fieldErrors.email ? 'input-err' : ''}
               />
               {fieldErrors.email && (
-                <span className="field-err-msg">{fieldErrors.email.join(' ')}</span>
+                <span className="field-err-msg">{formatError(fieldErrors.email)}</span>
               )}
             </div>
 
@@ -220,7 +262,7 @@ export default function AuthView({ onAuthSuccess }) {
                 className={fieldErrors.nickname ? 'input-err' : ''}
               />
               {fieldErrors.nickname && (
-                <span className="field-err-msg">{fieldErrors.nickname.join(' ')}</span>
+                <span className="field-err-msg">{formatError(fieldErrors.nickname)}</span>
               )}
             </div>
 
@@ -236,7 +278,7 @@ export default function AuthView({ onAuthSuccess }) {
                   className={fieldErrors.password ? 'input-err' : ''}
                 />
                 {fieldErrors.password && (
-                  <span className="field-err-msg">{fieldErrors.password.join(' ')}</span>
+                  <span className="field-err-msg">{formatError(fieldErrors.password)}</span>
                 )}
               </div>
 
@@ -246,12 +288,16 @@ export default function AuthView({ onAuthSuccess }) {
                   type="password"
                   required
                   value={registerForm.password_confirm}
-                  onChange={(e) => setRegisterForm({ ...registerForm, password_confirm: e.target.value })}
+                  onChange={(e) =>
+                    setRegisterForm({ ...registerForm, password_confirm: e.target.value })
+                  }
                   placeholder="Потвърди"
                   className={fieldErrors.password_confirm ? 'input-err' : ''}
                 />
                 {fieldErrors.password_confirm && (
-                  <span className="field-err-msg">{fieldErrors.password_confirm.join(' ')}</span>
+                  <span className="field-err-msg">
+                    {formatError(fieldErrors.password_confirm)}
+                  </span>
                 )}
               </div>
             </div>
@@ -269,6 +315,7 @@ export default function AuthView({ onAuthSuccess }) {
                 onClick={() => {
                   setTab('login')
                   setErrorMsg(null)
+                  setFieldErrors({})
                 }}
               >
                 Влезте оттук
