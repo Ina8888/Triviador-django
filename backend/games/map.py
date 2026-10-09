@@ -9,7 +9,6 @@ from collections import deque
 import itertools
 from django.core.exceptions import ValidationError
 
-# Project map definition: 18 territories (multiple of 3, between 9 and 21)
 MAP_DEFINITION = [
     {
         "slug": "skali",
@@ -162,7 +161,6 @@ def validate_map_graph(definition=None):
 
         adj[slug] = set(neighbors)
 
-    # Verify all neighbors exist
     for slug, nbrs in adj.items():
         for nbr in nbrs:
             if nbr not in slugs:
@@ -170,7 +168,6 @@ def validate_map_graph(definition=None):
                     f"Territory '{slug}' references unknown neighbor '{nbr}'."
                 )
 
-    # Verify symmetry
     for slug, nbrs in adj.items():
         for nbr in nbrs:
             if slug not in adj[nbr]:
@@ -178,7 +175,7 @@ def validate_map_graph(definition=None):
                     f"Asymmetric connection: '{slug}' has neighbor '{nbr}', but not vice-versa."
                 )
 
-    # Verify connectivity (BFS)
+#bfs
     start = next(iter(slugs))
     visited = set()
     queue = deque([start])
@@ -195,7 +192,6 @@ def validate_map_graph(definition=None):
             f"Graph is not connected: reached {len(visited)} of {count} territories."
         )
 
-    # Verify existence of at least one triplet of pairwise non-adjacent territories
     all_slugs = list(slugs)
     has_valid_triplet = False
     for a, b, c in itertools.combinations(all_slugs, 3):
@@ -246,7 +242,6 @@ def validate_game_territories(game):
             f"Game territories mismatch. Missing: {missing}, Extra: {extra}."
         )
 
-    # Check names and neighbor connections
     for item in MAP_DEFINITION:
         slug = item["slug"]
         expected_name = item["name"]
@@ -259,7 +254,6 @@ def validate_game_territories(game):
             )
 
         actual_neighbors = {n.slug for n in t.neighbors.all()}
-        # Also ensure neighbor belongs to the same game
         for n in t.neighbors.all():
             if n.game_id != game.pk:
                 raise ValidationError(

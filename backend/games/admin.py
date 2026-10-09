@@ -59,16 +59,13 @@ class TerritoryAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            # Protect map structure: game, identity, and neighbor links are read-only
             return ("game", "name", "slug", "neighbors") + self.readonly_fields
         return self.readonly_fields
 
     def has_add_permission(self, request):
-        # Structural protection: territories are managed by game initialization (M05)
         return False
 
     def has_delete_permission(self, request, obj=None):
-        # Structural protection: territories cannot be arbitrarily deleted
         return False
 
     def save_model(self, request, obj, form, change):
@@ -88,16 +85,13 @@ class CapitalAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            # Protect links: player and territory cannot be arbitrarily swapped
             return ("player", "territory")
         return ()
 
     def has_add_permission(self, request):
-        # Structural protection: capitals are managed by M05 gameplay
         return False
 
     def has_delete_permission(self, request, obj=None):
-        # Structural protection: capitals cannot be arbitrarily deleted
         return False
 
     def save_model(self, request, obj, form, change):
