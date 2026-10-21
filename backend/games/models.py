@@ -286,3 +286,16 @@ class Capital(models.Model):
     def __str__(self):
         return f"Capital of {self.player} at {self.territory.name} (Health: {self.health})"
 
+
+
+
+class WaitingRoomEntry(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE,
+        related_name = "waiting_entry",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username} (waiting)"
