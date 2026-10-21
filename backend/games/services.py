@@ -203,3 +203,33 @@ def leave_waiting_room(user):
         return True
     return False
 
+
+
+def form_game(random_generator=None):
+    #Taking only the suitable users that are neither active nor wainting 
+    busy_user_ids = Player.objects.filter(game__status__in=[Game.Status.WAITING, Game.Status.ACTIVE]).values_list("user_id", flat=True)
+    suitable = list(WaitingRoomEntry.objects.exclude(user_id__in=busy_user_ids))
+
+    if len(suitable) < 3:
+        return None
+
+    #Choosing 3 random
+    rng = random_generator or random
+    chosen_entries = rng.sample(suitable, 3)
+
+    with transaction.atomic():
+        game = Game.objects.create(status=Game.Status.WAITING)
+        colors = [Player.Color.RED, Player.Color.GREEN, Player.Color.BLUE]
+
+        for entry, color in zip(chosen_entries, colors):
+            Player.objects.create(
+                user=entry.user,
+                game=game,
+                color=color,
+                score=0,)
+
+        #Removing only the chosen 3
+        chosen_ids = [e.id for e in chosen_entries]
+        WaitingRoomEntry.objects.filter(id__in=chosen_ids).delete()
+
+    return game
