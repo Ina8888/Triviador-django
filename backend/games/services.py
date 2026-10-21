@@ -14,7 +14,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 
 from .map import MAP_DEFINITION, validate_map_graph, validate_game_territories
-from .models import Capital, Game, Territory
+from .models import Capital, Game, Territory, Player, WaitingRoomEntry
 
 
 def get_valid_capital_triplets(map_definition):
@@ -169,3 +169,37 @@ def initialize_game(game, random_generator=None, map_definition=None):
     # Refresh original game instance
     game.refresh_from_db()
     return game
+
+
+
+
+def is_user_suitable(user):
+    #checking whether user is already in an active or waiting game
+    has_active_game = Player.objects.filter(
+        user = user,
+        game__status__in=[Game.Status.WAITING, Game.Status.ACTIVE]
+    ).exists()
+    return not has_active_game
+
+
+def join_waiting_room(user):
+    #If user is already waiting, return false 
+    if WaitingRoomEntry.objects.filter(user=user).exists():
+        return False, "Already in waiting room"
+
+    #Checking if the user is able to join the waiting room
+    if not is_user_suitable(user):
+        return False, "Already in an active or waiting game"
+
+    entry = WaitingRoomEntry.objects.create(user=user)
+    return True, entry
+
+
+def leave_waiting_room(user):
+    #If there is an entry - delete it, if there isn't then nothing changes
+    entry = WaitingRoomEntry.objects.filter(user=user).first()
+    if entry:
+        entry.delete()
+        return True
+    return False
+
