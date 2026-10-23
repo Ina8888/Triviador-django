@@ -149,6 +149,11 @@ class Round(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
     )
+    completion_reason = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
@@ -172,19 +177,159 @@ class Round(models.Model):
             raise ValidationError(
                 {"completed_at": "Completed round must have completed_at timestamp."}
             )
+        # Completed round without winner must have a completion_reason
+        if self.status == self.Status.COMPLETED and self.winner is None and not self.completion_reason:
+            raise ValidationError(
+                {"winner": "Completed round without winner must specify a completion_reason."}
+            )
 
-    def complete(self, winner=None):
-        """Mark round as completed with optional winner and timestamp."""
+    def complete(self, winner=None, completion_reason=None):
+        """Mark round as completed with optional winner, reason and timestamp."""
         if winner is not None and winner.game_id != self.game_id:
             raise ValidationError({"winner": "Winner must be a player of the same game."})
         self.winner = winner
+        self.completion_reason = completion_reason
         self.status = self.Status.COMPLETED
         self.completed_at = timezone.now()
         self.full_clean()
         self.save()
 
+    def get_current_question(self):
+        """Return the current or latest asked question for this round."""
+        return self.questions.order_by("-sequence").first()
+
+    def get_placements(self):
+        """Return the recorded placements for this round ordered by place."""
+        return self.placements.order_by("place")
+
     def __str__(self):
         return f"Round {self.number} of Game #{self.game_id} ({self.status})"
+
+
+class RoundQuestion(models.Model):
+    """An asked question within a round, preserving snapshot content and timing."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pending"
+        ACTIVE = "active", "Active"
+        COMPLETED = "completed", "Completed"
+
+    round = models.ForeignKey(
+        Round,
+        on_delete=models.CASCADE,
+        related_name="questions",
+    )
+    question = models.ForeignKey(
+        "questions.NumericQuestion",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="round_questions",
+    )
+    sequence = models.PositiveIntegerField(default=1)
+    question_text = models.TextField()
+    correct_answer = models.IntegerField()
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+    started_at = models.DateTimeField(null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
+    participants = models.ManyToManyField(
+        Player,
+        related_name="round_questions",
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ["sequence"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["round", "sequence"],
+                name="unique_question_sequence_per_round",
+            ),
+        ]
+
+    def get_remaining_seconds(self, current_time=None):
+        """Return remaining seconds until deadline, or 0.0 if not active/expired."""
+        if not self.deadline or self.status != self.Status.ACTIVE:
+            return 0.0
+        now = current_time or timezone.now()
+        remaining = (self.deadline - now).total_seconds()
+        return max(0.0, remaining)
+
+    def is_expired(self, current_time=None):
+        """Return True if the deadline has arrived or passed."""
+        if not self.deadline:
+            return False
+        now = current_time or timezone.now()
+        return now >= self.deadline
+
+    def __str__(self):
+        return f"Q#{self.sequence} for Round #{self.round_id} ({self.status})"
+
+
+class RoundAnswer(models.Model):
+    """An accepted answer submitted by a player for a specific round question."""
+
+    round_question = models.ForeignKey(
+        RoundQuestion,
+        on_delete=models.CASCADE,
+        related_name="answers",
+    )
+    player = models.ForeignKey(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="round_answers",
+    )
+    answer = models.IntegerField()
+    difference = models.PositiveIntegerField()
+    submitted_at = models.DateTimeField()
+
+    class Meta:
+        ordering = ["difference", "submitted_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["round_question", "player"],
+                name="unique_player_answer_per_question",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.player} answered {self.answer} (diff: {self.difference})"
+
+
+class RoundPlacement(models.Model):
+    """Recorded placement (1st, 2nd place, etc.) for a round."""
+
+    round = models.ForeignKey(
+        Round,
+        on_delete=models.CASCADE,
+        related_name="placements",
+    )
+    player = models.ForeignKey(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="round_placements",
+    )
+    place = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["place"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["round", "place"],
+                name="unique_place_per_round",
+            ),
+            models.UniqueConstraint(
+                fields=["round", "player"],
+                name="unique_player_per_round_placement",
+            ),
+        ]
+
+    def __str__(self):
+        return f"Place {self.place}: {self.player}"
 
 
 class Territory(models.Model):
@@ -285,4 +430,3 @@ class Capital(models.Model):
 
     def __str__(self):
         return f"Capital of {self.player} at {self.territory.name} (Health: {self.health})"
-

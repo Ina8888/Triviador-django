@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Game, Player, Round, Territory, Capital
+from .models import (
+    Capital,
+    Game,
+    Player,
+    Round,
+    RoundAnswer,
+    RoundPlacement,
+    RoundQuestion,
+    Territory,
+)
 
 
 class PlayerInline(admin.TabularInline):
@@ -11,8 +20,22 @@ class PlayerInline(admin.TabularInline):
 class RoundInline(admin.TabularInline):
     model = Round
     extra = 0
-    fields = ("number", "type", "status", "winner", "created_at", "completed_at")
+    fields = ("number", "type", "status", "winner", "completion_reason", "created_at", "completed_at")
     readonly_fields = ("created_at",)
+
+
+class RoundQuestionInline(admin.TabularInline):
+    model = RoundQuestion
+    extra = 0
+    fields = ("sequence", "status", "question_text", "correct_answer", "started_at", "deadline")
+    readonly_fields = ("sequence", "question_text", "correct_answer", "started_at", "deadline")
+
+
+class RoundPlacementInline(admin.TabularInline):
+    model = RoundPlacement
+    extra = 0
+    fields = ("place", "player")
+    readonly_fields = ("place", "player")
 
 
 @admin.register(Game)
@@ -40,8 +63,27 @@ class PlayerAdmin(admin.ModelAdmin):
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
-    list_display = ("game", "number", "type", "status", "winner", "created_at", "completed_at")
+    list_display = ("game", "number", "type", "status", "winner", "completion_reason", "created_at", "completed_at")
     list_filter = ("game", "type", "status")
+    inlines = [RoundQuestionInline, RoundPlacementInline]
+
+
+@admin.register(RoundQuestion)
+class RoundQuestionAdmin(admin.ModelAdmin):
+    list_display = ("round", "sequence", "status", "question_text", "correct_answer", "started_at", "deadline")
+    list_filter = ("status", "round__game")
+
+
+@admin.register(RoundAnswer)
+class RoundAnswerAdmin(admin.ModelAdmin):
+    list_display = ("round_question", "player", "answer", "difference", "submitted_at")
+    list_filter = ("round_question__round__game",)
+
+
+@admin.register(RoundPlacement)
+class RoundPlacementAdmin(admin.ModelAdmin):
+    list_display = ("round", "place", "player")
+    list_filter = ("round__game", "place")
 
 
 @admin.register(Territory)
