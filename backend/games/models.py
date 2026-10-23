@@ -332,6 +332,48 @@ class RoundPlacement(models.Model):
         return f"Place {self.place}: {self.player}"
 
 
+class CaptureRight(models.Model):
+    """Granted territory selection rights for a player from a completed round."""
+
+    round = models.ForeignKey(
+        Round,
+        on_delete=models.CASCADE,
+        related_name="capture_rights",
+    )
+    player = models.ForeignKey(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="capture_rights",
+    )
+    order = models.PositiveIntegerField()  # 1 for 1st place, 2 for 2nd place
+    allowed_choices = models.PositiveIntegerField()
+    used_choices = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["round", "player"],
+                name="unique_player_capture_right_per_round",
+            ),
+            models.UniqueConstraint(
+                fields=["round", "order"],
+                name="unique_order_capture_right_per_round",
+            ),
+        ]
+
+    @property
+    def remaining_choices(self):
+        return max(0, self.allowed_choices - self.used_choices)
+
+    @property
+    def is_fulfilled(self):
+        return self.used_choices >= self.allowed_choices
+
+    def __str__(self):
+        return f"{self.player} (Order {self.order}): {self.used_choices}/{self.allowed_choices} used in Round #{self.round.number}"
+
+
 class Territory(models.Model):
     """A map territory belonging to a specific game session."""
 
@@ -391,6 +433,38 @@ class Territory(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.slug}) [Game #{self.game_id}]"
+
+
+class TerritoryCaptureLog(models.Model):
+    """Historical audit log of a territory capture action."""
+
+    round = models.ForeignKey(
+        Round,
+        on_delete=models.CASCADE,
+        related_name="capture_logs",
+    )
+    player = models.ForeignKey(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="capture_logs",
+    )
+    territory = models.ForeignKey(
+        Territory,
+        on_delete=models.CASCADE,
+        related_name="capture_logs",
+    )
+    points_awarded = models.PositiveIntegerField()
+    player_score_before = models.PositiveIntegerField()
+    player_score_after = models.PositiveIntegerField()
+    territory_score_before = models.PositiveIntegerField()
+    territory_score_after = models.PositiveIntegerField()
+    captured_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["captured_at"]
+
+    def __str__(self):
+        return f"{self.player} captured {self.territory.name} (+{self.points_awarded} pts)"
 
 
 class Capital(models.Model):

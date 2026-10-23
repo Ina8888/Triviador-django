@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (
     Capital,
+    CaptureRight,
     Game,
     Player,
     Round,
@@ -8,6 +9,7 @@ from .models import (
     RoundPlacement,
     RoundQuestion,
     Territory,
+    TerritoryCaptureLog,
 )
 
 
@@ -38,6 +40,13 @@ class RoundPlacementInline(admin.TabularInline):
     readonly_fields = ("place", "player")
 
 
+class CaptureRightInline(admin.TabularInline):
+    model = CaptureRight
+    extra = 0
+    fields = ("order", "player", "allowed_choices", "used_choices")
+    readonly_fields = ("order", "player", "allowed_choices", "used_choices")
+
+
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = ("id", "created_at", "status", "player_count")
@@ -65,7 +74,7 @@ class PlayerAdmin(admin.ModelAdmin):
 class RoundAdmin(admin.ModelAdmin):
     list_display = ("game", "number", "type", "status", "winner", "completion_reason", "created_at", "completed_at")
     list_filter = ("game", "type", "status")
-    inlines = [RoundQuestionInline, RoundPlacementInline]
+    inlines = [RoundQuestionInline, RoundPlacementInline, CaptureRightInline]
 
 
 @admin.register(RoundQuestion)
@@ -84,6 +93,18 @@ class RoundAnswerAdmin(admin.ModelAdmin):
 class RoundPlacementAdmin(admin.ModelAdmin):
     list_display = ("round", "place", "player")
     list_filter = ("round__game", "place")
+
+
+@admin.register(CaptureRight)
+class CaptureRightAdmin(admin.ModelAdmin):
+    list_display = ("round", "order", "player", "allowed_choices", "used_choices")
+    list_filter = ("round__game", "order")
+
+
+@admin.register(TerritoryCaptureLog)
+class TerritoryCaptureLogAdmin(admin.ModelAdmin):
+    list_display = ("round", "player", "territory", "points_awarded", "player_score_after", "territory_score_after", "captured_at")
+    list_filter = ("round__game", "player")
 
 
 @admin.register(Territory)
