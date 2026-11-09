@@ -154,6 +154,27 @@ class Round(models.Model):
         null=True,
         blank=True,
     )
+    attacker = models.ForeignKey(
+        Player,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="attacked_rounds",
+    )
+    defender = models.ForeignKey(
+        Player,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="defended_rounds",
+    )
+    target_territory = models.ForeignKey(
+        "Territory",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="target_rounds",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
@@ -172,6 +193,15 @@ class Round(models.Model):
             raise ValidationError(
                 {"winner": "Winner must be a player of the same game."}
             )
+        # Attacker and Defender checks
+        if self.attacker is not None and self.attacker.game_id != self.game_id:
+            raise ValidationError({"attacker": "Attacker must belong to the same game."})
+        if self.defender is not None and self.defender.game_id != self.game_id:
+            raise ValidationError({"defender": "Defender must belong to the same game."})
+        if self.attacker is not None and self.defender is not None and self.attacker == self.defender:
+            raise ValidationError("Attacker and defender must be different players.")
+        if self.target_territory is not None and self.target_territory.game_id != self.game_id:
+            raise ValidationError({"target_territory": "Target territory must belong to the same game."})
         # Completed round must have completed_at
         if self.status == self.Status.COMPLETED and self.completed_at is None:
             raise ValidationError(
@@ -214,10 +244,19 @@ class RoundQuestion(models.Model):
         ACTIVE = "active", "Active"
         COMPLETED = "completed", "Completed"
 
+    class QuestionType(models.TextChoices):
+        NUMERIC = "numeric", "Numeric"
+        CHOICE = "choice", "Choice"
+
     round = models.ForeignKey(
         Round,
         on_delete=models.CASCADE,
         related_name="questions",
+    )
+    question_type = models.CharField(
+        max_length=10,
+        choices=QuestionType.choices,
+        default=QuestionType.NUMERIC,
     )
     question = models.ForeignKey(
         "questions.NumericQuestion",
@@ -226,9 +265,16 @@ class RoundQuestion(models.Model):
         blank=True,
         related_name="round_questions",
     )
+    choice_question = models.ForeignKey(
+        "questions.ChoiceQuestion",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="round_questions",
+    )
     sequence = models.PositiveIntegerField(default=1)
     question_text = models.TextField()
-    correct_answer = models.IntegerField()
+    correct_answer = models.IntegerField(null=True, blank=True)
     status = models.CharField(
         max_length=10,
         choices=Status.choices,
@@ -267,7 +313,7 @@ class RoundQuestion(models.Model):
         return now >= self.deadline
 
     def __str__(self):
-        return f"Q#{self.sequence} for Round #{self.round_id} ({self.status})"
+        return f"Q#{self.sequence} ({self.question_type}) for Round #{self.round_id} ({self.status})"
 
 
 class RoundAnswer(models.Model):
@@ -283,12 +329,20 @@ class RoundAnswer(models.Model):
         on_delete=models.CASCADE,
         related_name="round_answers",
     )
-    answer = models.IntegerField()
-    difference = models.PositiveIntegerField()
+    answer = models.IntegerField(null=True, blank=True)
+    difference = models.PositiveIntegerField(null=True, blank=True)
+    selected_option = models.ForeignKey(
+        "questions.AnswerOption",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="round_answers",
+    )
+    is_correct = models.BooleanField(null=True, blank=True)
     submitted_at = models.DateTimeField()
 
     class Meta:
-        ordering = ["difference", "submitted_at"]
+        ordering = ["submitted_at"]
         constraints = [
             models.UniqueConstraint(
                 fields=["round_question", "player"],
@@ -297,6 +351,8 @@ class RoundAnswer(models.Model):
         ]
 
     def __str__(self):
+        if self.round_question.question_type == RoundQuestion.QuestionType.CHOICE:
+            return f"{self.player} chose {self.selected_option} (correct: {self.is_correct})"
         return f"{self.player} answered {self.answer} (diff: {self.difference})"
 
 

@@ -22,15 +22,15 @@ class PlayerInline(admin.TabularInline):
 class RoundInline(admin.TabularInline):
     model = Round
     extra = 0
-    fields = ("number", "type", "status", "winner", "completion_reason", "created_at", "completed_at")
+    fields = ("number", "type", "status", "attacker", "defender", "target_territory", "winner", "completion_reason", "created_at", "completed_at")
     readonly_fields = ("created_at",)
 
 
 class RoundQuestionInline(admin.TabularInline):
     model = RoundQuestion
     extra = 0
-    fields = ("sequence", "status", "question_text", "correct_answer", "started_at", "deadline")
-    readonly_fields = ("sequence", "question_text", "correct_answer", "started_at", "deadline")
+    fields = ("sequence", "question_type", "status", "question_text", "correct_answer", "choice_question", "started_at", "deadline")
+    readonly_fields = ("sequence", "question_type", "question_text", "correct_answer", "choice_question", "started_at", "deadline")
 
 
 class RoundPlacementInline(admin.TabularInline):
@@ -72,21 +72,21 @@ class PlayerAdmin(admin.ModelAdmin):
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
-    list_display = ("game", "number", "type", "status", "winner", "completion_reason", "created_at", "completed_at")
+    list_display = ("game", "number", "type", "status", "attacker", "defender", "target_territory", "winner", "completion_reason", "created_at", "completed_at")
     list_filter = ("game", "type", "status")
     inlines = [RoundQuestionInline, RoundPlacementInline, CaptureRightInline]
 
 
 @admin.register(RoundQuestion)
 class RoundQuestionAdmin(admin.ModelAdmin):
-    list_display = ("round", "sequence", "status", "question_text", "correct_answer", "started_at", "deadline")
-    list_filter = ("status", "round__game")
+    list_display = ("round", "sequence", "question_type", "status", "question_text", "correct_answer", "choice_question", "started_at", "deadline")
+    list_filter = ("status", "question_type", "round__game")
 
 
 @admin.register(RoundAnswer)
 class RoundAnswerAdmin(admin.ModelAdmin):
-    list_display = ("round_question", "player", "answer", "difference", "submitted_at")
-    list_filter = ("round_question__round__game",)
+    list_display = ("round_question", "player", "answer", "difference", "selected_option", "is_correct", "submitted_at")
+    list_filter = ("round_question__round__game", "is_correct")
 
 
 @admin.register(RoundPlacement)

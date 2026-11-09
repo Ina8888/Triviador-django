@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.utils import timezone
 
-from questions.models import NumericQuestion
+from questions.models import AnswerOption, ChoiceQuestion, NumericQuestion
 from .exceptions import GameError, InvalidInputError, InvalidStateError, RecordNotFoundError
 from .map import MAP_DEFINITION, validate_map_graph, validate_game_territories
 from .models import (
@@ -179,8 +179,16 @@ def has_pending_capture_rights(game):
     return latest_completed.capture_rights.filter(used_choices__lt=models.F("allowed_choices")).exists()
 
 
-def create_round(game, round_type=Round.Type.CITY_CAPTURE, question=None, random_generator=None):
-    """Create a new round in 'pending' status with an initial numeric question.
+def create_round(
+    game,
+    round_type=None,
+    question=None,
+    attacker=None,
+    target_territory=None,
+    defender=None,
+    random_generator=None,
+):
+    """Create a new round in 'pending' status.
 
     Preconditions:
     - Game must be 'active'.
@@ -188,7 +196,9 @@ def create_round(game, round_type=Round.Type.CITY_CAPTURE, question=None, random
     - Game cannot have an existing uncompleted round (at most one pending/active round).
     - Previous round must not have unfulfilled territory capture rights.
     - For city_capture: conquest phase must not be completed (at least 1 free territory needed).
-    - An unused NumericQuestion must be assigned.
+    - For battle / capital_attack: all territories must be captured (0 free territories),
+      attacker must be in game, target must belong to game, not be free, not owned by attacker,
+      adjacent to at least one attacker territory; defender is target.owner.
     """
     if game.status != Game.Status.ACTIVE:
         raise InvalidStateError(f"Cannot create round for game in '{game.status}' status (must be active).")
@@ -202,6 +212,103 @@ def create_round(game, round_type=Round.Type.CITY_CAPTURE, question=None, random
     if has_pending_capture_rights(game):
         raise InvalidStateError("Cannot create a new round: unfulfilled territory capture rights remain in the previous round.")
 
+    is_battle = (
+        round_type in (Round.Type.BATTLE, Round.Type.CAPITAL_ATTACK)
+        or target_territory is not None
+        or attacker is not None
+    )
+
+    if is_battle:
+        # All territories must be captured before battles can begin
+        free_count = game.territories.filter(owner__isnull=True).count()
+        if free_count > 0:
+            raise InvalidStateError("Cannot start battles while free territories remain on the map.")
+
+        if attacker is None or attacker.game_id != game.id:
+            raise InvalidInputError("Attacker must be a player in this game.")
+
+        if target_territory is None or target_territory.game_id != game.id:
+            raise InvalidInputError("Target territory must belong to this game.")
+
+        if target_territory.owner is None:
+            raise InvalidInputError("Target territory cannot be free.")
+
+        if target_territory.owner == attacker:
+            raise InvalidInputError("Cannot attack own territory.")
+
+        if not target_territory.neighbors.filter(owner=attacker).exists():
+            raise InvalidInputError("Target territory must be adjacent to at least one territory owned by attacker.")
+
+        real_defender = target_territory.owner
+        if defender is not None and defender != real_defender:
+            raise InvalidInputError("Provided defender does not match target territory owner.")
+        defender = real_defender
+
+        is_capital = Capital.objects.filter(territory=target_territory).exists()
+        expected_type = Round.Type.CAPITAL_ATTACK if is_capital else Round.Type.BATTLE
+        if round_type is not None and round_type != expected_type:
+            raise InvalidInputError(f"Target territory requires round type '{expected_type}', not '{round_type}'.")
+        round_type = expected_type
+
+        # Select ChoiceQuestion
+        used_choice_ids = RoundQuestion.objects.filter(
+            round__game=game, choice_question__isnull=False
+        ).values_list("choice_question_id", flat=True)
+
+        if question is not None:
+            if not isinstance(question, ChoiceQuestion):
+                raise InvalidInputError("Question for battle round must be a ChoiceQuestion.")
+            if question.id in used_choice_ids:
+                raise InvalidInputError("The specified choice question has already been used in this game.")
+            if question.options.count() != 4 or question.options.filter(is_correct=True).count() != 1:
+                raise InvalidInputError("ChoiceQuestion must have exactly 4 options with exactly 1 correct answer.")
+            selected_choice_q = question
+        else:
+            available_choice = list(
+                ChoiceQuestion.objects.exclude(id__in=used_choice_ids)
+                .annotate(
+                    opt_count=models.Count("options"),
+                    correct_count=models.Count("options", filter=models.Q(options__is_correct=True)),
+                )
+                .filter(opt_count=4, correct_count=1)
+            )
+            if not available_choice:
+                raise RecordNotFoundError("No unused choice questions available in question bank.")
+            rng = random_generator or random
+            selected_choice_q = rng.choice(available_choice)
+
+        max_num = game.rounds.aggregate(models.Max("number"))["number__max"]
+        round_number = (max_num + 1) if max_num is not None else 1
+
+        with transaction.atomic():
+            round_obj = Round.objects.create(
+                game=game,
+                number=round_number,
+                type=round_type,
+                status=Round.Status.PENDING,
+                attacker=attacker,
+                defender=defender,
+                target_territory=target_territory,
+                winner=None,
+                completed_at=None,
+            )
+            round_q = RoundQuestion.objects.create(
+                round=round_obj,
+                question_type=RoundQuestion.QuestionType.CHOICE,
+                choice_question=selected_choice_q,
+                sequence=1,
+                question_text=selected_choice_q.text,
+                correct_answer=None,
+                status=RoundQuestion.Status.PENDING,
+                started_at=None,
+                deadline=None,
+            )
+            round_q.participants.set([attacker, defender])
+
+        return round_obj
+
+    # Default to CITY_CAPTURE
+    round_type = round_type or Round.Type.CITY_CAPTURE
     if round_type == Round.Type.CITY_CAPTURE and game.territories.exists():
         free_count = game.territories.filter(owner__isnull=True).count()
         if free_count == 0:
@@ -209,7 +316,7 @@ def create_round(game, round_type=Round.Type.CITY_CAPTURE, question=None, random
 
     # Find unused numeric questions in this game
     used_question_ids = RoundQuestion.objects.filter(
-        round__game=game
+        round__game=game, question__isnull=False
     ).values_list("question_id", flat=True)
 
     if question is None:
@@ -239,6 +346,7 @@ def create_round(game, round_type=Round.Type.CITY_CAPTURE, question=None, random
 
         round_q = RoundQuestion.objects.create(
             round=round_obj,
+            question_type=RoundQuestion.QuestionType.NUMERIC,
             question=selected_question,
             sequence=1,
             question_text=selected_question.text,
@@ -279,13 +387,14 @@ def start_round(round_obj, start_time=None):
     return round_obj
 
 
-def submit_round_answer(round_obj, player, answer, current_time=None):
-    """Submit an integer answer for the current active question of a round.
+def submit_round_answer(round_obj, player, answer=None, option=None, current_time=None):
+    """Submit an answer for the current active question of a round.
 
     Rules:
     - Trusted application time is captured immediately upon processing before deadline check.
     - Exactly on or after the deadline, the answer is rejected.
-    - Only integer inputs are accepted (no float, string, or boolean).
+    - For Numeric questions: strictly integer inputs.
+    - For Choice questions: AnswerOption instance or valid option ID belonging to current question.
     - Only participants of the active question may submit.
     - At most one accepted answer per player per question.
     """
@@ -307,10 +416,6 @@ def submit_round_answer(round_obj, player, answer, current_time=None):
     if not current_q.participants.filter(id=player.id).exists():
         raise InvalidStateError("Player is not an active participant for the current question.")
 
-    # Strict integer check: reject bool, float, str, or any non-int
-    if isinstance(answer, bool) or not isinstance(answer, int):
-        raise InvalidInputError("Answer must strictly be an integer (floating point or non-integers are rejected).")
-
     # Deadline boundary: exactly on deadline or after deadline is rejected
     if current_q.deadline is not None and now >= current_q.deadline:
         raise InvalidStateError("Answer rejected: question deadline has expired.")
@@ -319,18 +424,128 @@ def submit_round_answer(round_obj, player, answer, current_time=None):
     if RoundAnswer.objects.filter(round_question=current_q, player=player).exists():
         raise InvalidStateError("Player has already submitted an accepted answer for this question.")
 
-    diff = abs(answer - current_q.correct_answer)
+    if current_q.question_type == RoundQuestion.QuestionType.CHOICE:
+        selected_option = option if option is not None else answer
+        if isinstance(selected_option, int) and not isinstance(selected_option, bool):
+            fetched = AnswerOption.objects.filter(id=selected_option).first()
+            if fetched:
+                selected_option = fetched
+
+        if not isinstance(selected_option, AnswerOption):
+            raise InvalidInputError("Answer for choice question must be an AnswerOption or valid option ID.")
+
+        if selected_option.question_id != current_q.choice_question_id:
+            raise InvalidInputError("Selected option does not belong to the current choice question.")
+
+        with transaction.atomic():
+            answer_obj = RoundAnswer.objects.create(
+                round_question=current_q,
+                player=player,
+                selected_option=selected_option,
+                is_correct=selected_option.is_correct,
+                submitted_at=now,
+            )
+        return answer_obj
+
+    else:
+        # Numeric question
+        if isinstance(answer, bool) or not isinstance(answer, int):
+            raise InvalidInputError("Answer must strictly be an integer (floating point or non-integers are rejected).")
+
+        diff = abs(answer - current_q.correct_answer)
+
+        with transaction.atomic():
+            answer_obj = RoundAnswer.objects.create(
+                round_question=current_q,
+                player=player,
+                answer=answer,
+                difference=diff,
+                submitted_at=now,
+            )
+        return answer_obj
+
+
+def _finalize_battle_completion(round_obj, winner, now, reason=None):
+    """Atomically record battle completion, apply score/territory updates, and log capture (M08)."""
+    target = round_obj.target_territory
+
+    # Pre-check target owner:
+    # "Преди прилагане на резултата проверете, че owner още съответства на битката."
+    # "Ако целта вече не съответства на записаната битка, опитът за прилагане се отказва без частичен резултат или награда."
+    if target is not None and target.owner_id != round_obj.defender_id:
+        raise InvalidStateError("Target territory owner does not match the defender recorded for this battle.")
 
     with transaction.atomic():
-        answer_obj = RoundAnswer.objects.create(
-            round_question=current_q,
-            player=player,
-            answer=answer,
-            difference=diff,
-            submitted_at=now,
-        )
+        try:
+            locked_round = Round.objects.select_for_update().get(id=round_obj.id)
+            locked_target = Territory.objects.select_for_update().get(id=target.id) if target else None
+            locked_attacker = Player.objects.select_for_update().get(id=round_obj.attacker_id) if round_obj.attacker else None
+            locked_defender = Player.objects.select_for_update().get(id=round_obj.defender_id) if round_obj.defender else None
+        except Exception:
+            locked_round = Round.objects.get(id=round_obj.id)
+            locked_target = Territory.objects.get(id=target.id) if target else None
+            locked_attacker = Player.objects.get(id=round_obj.attacker_id) if round_obj.attacker else None
+            locked_defender = Player.objects.get(id=round_obj.defender_id) if round_obj.defender else None
 
-    return answer_obj
+        # Idempotence: "Повторно приключване не повтаря нито една последица; само едно окончателно приключване носи награда, не всеки въпрос."
+        if locked_round.status == Round.Status.COMPLETED:
+            return locked_round
+
+        if locked_target and locked_target.owner_id != locked_defender.id:
+            raise InvalidStateError("Target territory owner does not match the defender recorded for this battle.")
+
+        locked_round.winner = winner
+        locked_round.status = Round.Status.COMPLETED
+        locked_round.completed_at = now
+        if reason:
+            locked_round.completion_reason = reason
+        elif winner is None and not locked_round.completion_reason:
+            locked_round.completion_reason = "draw"
+
+        if winner is not None:
+            RoundPlacement.objects.create(round=locked_round, player=winner, place=1)
+
+        # Apply consequences
+        if locked_round.type == Round.Type.BATTLE:
+            if winner == locked_attacker:
+                p_before = locked_attacker.score
+                t_before = locked_target.score
+
+                locked_target.owner = locked_attacker
+                locked_target.score += TERRITORY_SCORE_INCREMENT
+                locked_target.save()
+
+                total_reward = ROUND_VICTORY_REWARD + TERRITORY_CAPTURE_REWARD
+                locked_attacker.score += total_reward
+                locked_attacker.save()
+
+                TerritoryCaptureLog.objects.create(
+                    round=locked_round,
+                    player=locked_attacker,
+                    territory=locked_target,
+                    points_awarded=total_reward,
+                    player_score_before=p_before,
+                    player_score_after=locked_attacker.score,
+                    territory_score_before=t_before,
+                    territory_score_after=locked_target.score,
+                )
+            elif winner == locked_defender:
+                locked_defender.score += ROUND_VICTORY_REWARD
+                locked_defender.save()
+
+        elif locked_round.type == Round.Type.CAPITAL_ATTACK:
+            if winner == locked_attacker:
+                locked_attacker.score += ROUND_VICTORY_REWARD
+                locked_attacker.save()
+            elif winner == locked_defender:
+                locked_defender.score += ROUND_VICTORY_REWARD
+                locked_defender.save()
+
+        locked_round.full_clean()
+        locked_round.save()
+
+    round_obj.refresh_from_db()
+    return round_obj
 
 
 def _finalize_round_completion(round_obj, now, reason=None):
@@ -404,6 +619,15 @@ def resolve_round(round_obj, current_time=None, random_generator=None):
     - No answers: all participants are re-asked on a new question if limit/bank permits.
     - Final outcome: if bank exhausted or limit (3 questions) reached, unawarded places remain unfilled with reason.
     - In M07: Atomic finalization grants victory reward (+100) to winner and capture rights based on free territory count.
+    - In M08: For battle / capital_attack rounds:
+      * Choice question:
+        - 1 correct answer: author wins immediately.
+        - 2 correct answers: next question is an unused NumericQuestion for same 2 participants.
+        - 0 correct answers: next question is an unused ChoiceQuestion for same 2 participants.
+      * Numeric question:
+        - Evaluates proximity and speed; exact ties advance to next NumericQuestion.
+      * Limit is 3 questions max for round.
+      * Idempotence: Repeated resolution of an already completed round repeats no consequences.
     """
     now = current_time or timezone.now()
 
@@ -426,6 +650,136 @@ def resolve_round(round_obj, current_time=None, random_generator=None):
     if not (all_answered or deadline_expired):
         raise InvalidStateError("Cannot resolve round before all participants have answered or deadline has expired.")
 
+    # M08: Battle / Capital Attack resolution
+    if round_obj.type in (Round.Type.BATTLE, Round.Type.CAPITAL_ATTACK):
+        with transaction.atomic():
+            try:
+                locked_round = Round.objects.select_for_update().get(id=round_obj.id)
+            except Exception:
+                locked_round = Round.objects.get(id=round_obj.id)
+
+            if locked_round.status == Round.Status.COMPLETED:
+                return locked_round
+
+            current_q.status = RoundQuestion.Status.COMPLETED
+            current_q.save()
+
+            if current_q.question_type == RoundQuestion.QuestionType.CHOICE:
+                answers = list(current_q.answers.all())
+                correct_answers = [a for a in answers if a.is_correct is True]
+
+                if len(correct_answers) == 1:
+                    winner = correct_answers[0].player
+                    return _finalize_battle_completion(round_obj, winner, now)
+
+                elif len(correct_answers) == 2:
+                    # 2 correct answers: switch to NumericQuestion
+                    if current_q.sequence >= 3:
+                        return _finalize_battle_completion(round_obj, None, now, reason="limit_reached")
+
+                    used_num_ids = RoundQuestion.objects.filter(
+                        round__game=round_obj.game, question__isnull=False
+                    ).values_list("question_id", flat=True)
+                    avail_num = list(NumericQuestion.objects.exclude(id__in=used_num_ids))
+                    if not avail_num:
+                        return _finalize_battle_completion(round_obj, None, now, reason="question_bank_exhausted")
+
+                    rng = random_generator or random
+                    next_q = rng.choice(avail_num)
+                    new_q = RoundQuestion.objects.create(
+                        round=round_obj,
+                        question_type=RoundQuestion.QuestionType.NUMERIC,
+                        question=next_q,
+                        sequence=current_q.sequence + 1,
+                        question_text=next_q.text,
+                        correct_answer=next_q.correct_answer,
+                        status=RoundQuestion.Status.ACTIVE,
+                        started_at=now,
+                        deadline=now + timedelta(seconds=10),
+                    )
+                    new_q.participants.set([round_obj.attacker, round_obj.defender])
+                    return round_obj
+
+                else:
+                    # 0 correct answers: switch to ChoiceQuestion
+                    if current_q.sequence >= 3:
+                        return _finalize_battle_completion(round_obj, None, now, reason="limit_reached")
+
+                    used_choice_ids = RoundQuestion.objects.filter(
+                        round__game=round_obj.game, choice_question__isnull=False
+                    ).values_list("choice_question_id", flat=True)
+                    avail_choice = list(
+                        ChoiceQuestion.objects.exclude(id__in=used_choice_ids)
+                        .annotate(
+                            opt_count=models.Count("options"),
+                            correct_count=models.Count("options", filter=models.Q(options__is_correct=True)),
+                        )
+                        .filter(opt_count=4, correct_count=1)
+                    )
+                    if not avail_choice:
+                        return _finalize_battle_completion(round_obj, None, now, reason="question_bank_exhausted")
+
+                    rng = random_generator or random
+                    next_q = rng.choice(avail_choice)
+                    new_q = RoundQuestion.objects.create(
+                        round=round_obj,
+                        question_type=RoundQuestion.QuestionType.CHOICE,
+                        choice_question=next_q,
+                        sequence=current_q.sequence + 1,
+                        question_text=next_q.text,
+                        correct_answer=None,
+                        status=RoundQuestion.Status.ACTIVE,
+                        started_at=now,
+                        deadline=now + timedelta(seconds=10),
+                    )
+                    new_q.participants.set([round_obj.attacker, round_obj.defender])
+                    return round_obj
+
+            else:
+                # Numeric Question in Battle
+                answers = list(current_q.answers.order_by("difference", "submitted_at"))
+                if len(answers) == 1:
+                    return _finalize_battle_completion(round_obj, answers[0].player, now)
+                elif len(answers) == 2:
+                    a1, a2 = answers[0], answers[1]
+                    if a1.difference < a2.difference:
+                        return _finalize_battle_completion(round_obj, a1.player, now)
+                    elif a1.difference == a2.difference:
+                        if a1.submitted_at < a2.submitted_at:
+                            return _finalize_battle_completion(round_obj, a1.player, now)
+                        tied_players = [a1.player, a2.player]
+                    else:
+                        return _finalize_battle_completion(round_obj, a2.player, now)
+                else:
+                    tied_players = [round_obj.attacker, round_obj.defender]
+
+                if current_q.sequence >= 3:
+                    return _finalize_battle_completion(round_obj, None, now, reason="limit_reached")
+
+                used_num_ids = RoundQuestion.objects.filter(
+                    round__game=round_obj.game, question__isnull=False
+                ).values_list("question_id", flat=True)
+                avail_num = list(NumericQuestion.objects.exclude(id__in=used_num_ids))
+                if not avail_num:
+                    return _finalize_battle_completion(round_obj, None, now, reason="question_bank_exhausted")
+
+                rng = random_generator or random
+                next_q = rng.choice(avail_num)
+                new_q = RoundQuestion.objects.create(
+                    round=round_obj,
+                    question_type=RoundQuestion.QuestionType.NUMERIC,
+                    question=next_q,
+                    sequence=current_q.sequence + 1,
+                    question_text=next_q.text,
+                    correct_answer=next_q.correct_answer,
+                    status=RoundQuestion.Status.ACTIVE,
+                    started_at=now,
+                    deadline=now + timedelta(seconds=10),
+                )
+                new_q.participants.set(tied_players)
+                return round_obj
+
+    # M06 / M07: CITY_CAPTURE Resolution
     with transaction.atomic():
         # Complete the current question
         current_q.status = RoundQuestion.Status.COMPLETED
@@ -498,7 +852,9 @@ def resolve_round(round_obj, current_time=None, random_generator=None):
             return _finalize_round_completion(round_obj, now)
 
         # Ties remain: check limit (max 3 questions) and bank availability
-        used_q_ids = RoundQuestion.objects.filter(round__game=round_obj.game).values_list("question_id", flat=True)
+        used_q_ids = RoundQuestion.objects.filter(
+            round__game=round_obj.game, question__isnull=False
+        ).values_list("question_id", flat=True)
         available_questions = list(NumericQuestion.objects.exclude(id__in=used_q_ids))
 
         if current_q.sequence >= 3:
@@ -514,6 +870,7 @@ def resolve_round(round_obj, current_time=None, random_generator=None):
 
         new_round_q = RoundQuestion.objects.create(
             round=round_obj,
+            question_type=RoundQuestion.QuestionType.NUMERIC,
             question=next_q,
             sequence=new_sequence,
             question_text=next_q.text,
